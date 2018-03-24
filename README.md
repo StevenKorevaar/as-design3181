@@ -1,26 +1,30 @@
-     ,-----.,--.                  ,--. ,---.   ,--.,------.  ,------.
-    '  .--./|  | ,---. ,--.,--. ,-|  || o   \  |  ||  .-.  \ |  .---'
-    |  |    |  || .-. ||  ||  |' .-. |`..'  |  |  ||  |  \  :|  `--, 
-    '  '--'\|  |' '-' ''  ''  '\ `-' | .'  /   |  ||  '--'  /|  `---.
-     `-----'`--' `---'  `----'  `---'  `--'    `--'`-------' `------'
-    ----------------------------------------------------------------- 
+To Set Up the GIT REPOSITORY
 
+First, get GIT:
+https://gitforwindows.org/
 
-Hi there! Welcome to Cloud9 IDE!
+Then open GIT Bash and navigate to the folder you want to store all the files and run:
+$ git clone https://github.com/StevenKorevaar/as-design3181.git
 
-To get you started, we included a small hello world application.
+-----------------------------------------------------------------------------------------
+Now to actually Run the Website:
 
-1) Open the hello-world.html file
+Install this:
+https://chocolatey.org/
 
-2) Click on the Preview button to open a live preview pane
+Then run the commands:
+$ choco install php
+$ choco upgrade php
 
-3) Make some changes to the file, save, watch the preview, and have fun!
+Then navigate to the GIT repo and run the command:
+$ php -S localhost:8000
 
-Happy coding!
-The Cloud9 IDE team
+Then goto: http://localhost:8000 
 
+---------------------------------------------------------------------------------------
+Once you've made changes:
 
-## Support & Documentation
-
-Visit http://docs.c9.io for documentation, or http://support.c9.io for support.
-To watch some training videos, visit http://www.youtube.com/user/c9ide
+Run:
+$ git add .
+$ git commit -m "The changes youve made to the repo"
+$ git push
