@@ -13,10 +13,13 @@ Install this:
 https://chocolatey.org/
 
 Then run the commands:
+
 $ choco install php
+
 $ choco upgrade php
 
 Then navigate to the GIT repo and run the command:
+
 $ php -S localhost:8000
 
 Then goto: http://localhost:8000 
@@ -29,6 +32,7 @@ $ git pull
 Once you've made changes:
 
 Run:
+
 $ git pull
 
 $ git add .
