@@ -22,9 +22,18 @@ $ php -S localhost:8000
 Then goto: http://localhost:8000 
 
 ---------------------------------------------------------------------------------------
+Always Before you start development run:
+$ git pull
+
+
 Once you've made changes:
 
 Run:
+$ git pull
+
 $ git add .
+
 $ git commit -m "The changes youve made to the repo"
+
 $ git push
+
