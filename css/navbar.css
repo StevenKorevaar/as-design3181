@@ -1,0 +1,13 @@
+
+.form-control {
+    border-radius: 2px;
+}
+
+.navbar-inverse {
+    background-color: #524f4f;
+    border-color: #484545;
+}
+
+.navbar-inverse .navbar-brand {
+    color: #f5f5f5;
+}

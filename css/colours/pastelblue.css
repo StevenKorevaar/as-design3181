@@ -1,0 +1,37 @@
+.btn-signin {
+    background-color: #41827d;
+    border-color: #38716d;
+    color: #f5f5f5;
+}
+
+.btn-signin:hover {
+    background-color: #38716d;
+    border-color: #38716d;
+    color: #f5f5f5;
+}
+
+/* PASTEL BLUE SCHEME */
+
+/* Navbar Background colour */
+.navbar-inverse {
+    background-color: #7ebdba;
+    border-color: #0d8199;
+}
+
+/* Navbard Border Colour */
+.navbar-inverse .navbar-collapse, .navbar-inverse .navbar-form {
+    border-color: #0d8199 ;
+}
+
+/* Hamburger button */
+.navbar-inverse .navbar-toggle {
+    background-color: #41827d;
+    border-color: #2c756f;
+}
+
+/* Hamburger button Dark */
+.navbar-inverse .navbar-toggle:hover , .navbar-inverse .navbar-toggle:focus {
+    background-color: #38716d;
+    border-color: #2c756f;
+    
+}

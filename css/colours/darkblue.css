@@ -1,0 +1,41 @@
+/* DARK BLUE THEME */
+
+.btn-signin {
+    background-color: #059fbf;
+    border-color: #294661;
+    color: #f5f5f5;
+}
+
+.btn-signin:hover {
+    background-color: #0d8098;
+    border-color: #294661;
+    color: #f5f5f5;
+}
+
+
+
+/* DARK BLUE SCHEME */
+
+/* Navbar Background colour */
+.navbar-inverse {
+    background-color: #25425d;
+    border-color: #0b1e2f;
+}
+
+/* Navbard Border Colour */
+.navbar-inverse .navbar-collapse, .navbar-inverse .navbar-form {
+    border-color: #0d8199 ;
+}
+
+/* Hamburger button */
+.navbar-inverse .navbar-toggle {
+    background-color: #059fbf;
+    border-color: #0b1e2f;
+}
+
+/* Hamburger button Dark */
+.navbar-inverse .navbar-toggle:hover , .navbar-inverse .navbar-toggle:focus {
+    background-color: #0d8098;
+    border-color: #0b1e2f;
+    
+}

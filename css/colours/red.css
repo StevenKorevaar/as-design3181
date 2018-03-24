@@ -1,0 +1,41 @@
+/* DARK RED THEME */
+
+.btn-signin {
+    background-color: #792435;
+    border-color: #792435;
+    color: #f5f5f5;
+}
+
+.btn-signin:hover {
+    background-color: #5f1927;
+    border-color: #5f1927;
+    color: #f5f5f5;
+}
+
+
+/* RED SCHEME */
+
+.navbar-inverse {
+    background-color: #b5576A;
+    border-color: #882e40;
+}
+
+
+.navbar-inverse .navbar-brand {
+    color: #f5f5f5;
+}
+
+.navbar-inverse .navbar-collapse, .navbar-inverse .navbar-form {
+    border-color: #882e40 ;
+}
+
+.navbar-inverse .navbar-toggle {
+    background-color: #792536;
+    border-color: #882e40;
+}
+
+.navbar-inverse .navbar-toggle:hover , .navbar-inverse .navbar-toggle:focus {
+    background-color: #5f1927;
+    border-color: #5f1927;
+    
+}

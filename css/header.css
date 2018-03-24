@@ -1,0 +1,11 @@
+.jumbotron {
+    padding-top: 3rem;
+    padding-bottom: 0rem;
+    background-color: white;
+}
+
+.jumbotron .noCarousel {
+    padding-top: 5rem;
+    padding-bottom: 0rem;
+    background-color: white;
+}
