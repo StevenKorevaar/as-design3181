@@ -39,5 +39,8 @@ $ git add .
 
 $ git commit -m "The changes youve made to the repo"
 
+Once you have FINISHED DEVELOPMENT (ie. there are no website crashing or failing errors) 
+this is done so that your development does not get in the way of anyone elses. Then you can run: 
+
 $ git push
 
