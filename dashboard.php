@@ -10,9 +10,9 @@
         <title>Engineering Design 3A - Telstra Challenge Back End</title>
         
         <!-- Latest compiled and minified CSS -->
-    		<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     		
-    		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
         <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
         
         <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
@@ -24,13 +24,18 @@
     	
         <link href="css/navbar.css" rel="stylesheet">
       	<link href="css/header.css" rel="stylesheet">
-    	  <link href="css/button.css" rel="stylesheet">
+    	<link href="css/button.css" rel="stylesheet">
     		
       	<link href="css/dashboard.css" rel="stylesheet">
       	
       	<link href="css/colours/darkblue.css" rel="stylesheet">
-    		
-            
+        
+        
+        <script src="//cdnjs.cloudflare.com/ajax/libs/dygraph/2.1.0/dygraph.min.js"></script>
+        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/dygraph/2.1.0/dygraph.min.css" />
+    	
+        <script src="js/dygraph.js"></script>
+        
     </head>
     
     <body>
@@ -83,6 +88,10 @@
       </div>
     </div>
     
+    <div id="div_g" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+    <!--
+    <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+    -->
     <div class="container">
         <main class="col-sm-9 offset-sm-3 col-md-10 offset-md-2 pt-3">
           <h1>Dashboard</h1>
