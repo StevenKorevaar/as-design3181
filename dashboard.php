@@ -88,7 +88,7 @@
       </div>
     </div>
     
-    <div id="div_g" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+    <div id="div_g" style="min-width: 310px; max-width: 1200px; height: 400px; margin: 0 auto"></div>
     <!--
     <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
     -->
@@ -231,7 +231,7 @@
         <hr>
         <!-- FOOTER - NAMES AND COMPANY DETAILS -->
         <footer>
-          <p>&copy; 2018 - Telstra Challenge - Aaron Duivenvoorden, Steven Korevaar, Timothy Scott, and Leanne Tran</p>
+          <p>&copy; 2018 - Telstra Challenge - Aaron Duivenvoorden, Steven Korevaar, Timothy Scott, and Jeremy Siaw</p>
         </footer>
       </div>
 
