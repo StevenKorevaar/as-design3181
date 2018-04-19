@@ -47,7 +47,7 @@ $ git push
 ---------------------------------------------------------------------------------------
 To commit the latest changes to Azure
 
-$ git remote add azure  https://LaikaUser@laikaweb.scm.azurewebsites.net/laikaweb.git (I believe you will only need to do this once)
+$ git remote add azure https://Laika_User@laikamemg.scm.azurewebsites.net:443/laikamemg.git (I believe you will only need to do this once)
 
 $ git push azure master
 
