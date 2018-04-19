@@ -51,3 +51,7 @@ $ git remote add azure https://Laika_User@laikamemg.scm.azurewebsites.net:443/la
 
 $ git push azure master
 
+When prompt to enter the username and password,
+Username: Laika_User 
+Password: LaikaPassword123
+
