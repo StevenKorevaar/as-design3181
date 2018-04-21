@@ -1,0 +1,18 @@
+int dataCount = 0;
+
+int readData() {
+  ++dataCount;
+  float ret = (255/2)*sin( dataCount/10.0 ) + (255/2) + random(0, 20);
+  return abs( ret );
+}
+
+void setup() {
+  // put your setup code here, to run once:
+  randomSeed(analogRead(0));
+}
+
+void loop() {
+  // put your main code here, to run repeatedly:
+  Serial.print( "Ret: " );
+  Serial.println( readData );
+}
