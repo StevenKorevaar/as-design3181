@@ -5,9 +5,9 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <meta name="description" content="">
         <meta name="author" content="">
-        <link rel="icon" href="../../favicon.ico">
+        <link rel="icon" href="/img/favicon.ico">
         <!-- WEBPAGE TITLE -->
-        <title>Engineering Design 3A - Telstra Challenge Front End</title>
+        <title>Me-MG: Innovation in Motion</title>
         
         <!-- Latest compiled and minified CSS -->
     		<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -23,12 +23,12 @@
     		<!-- CSS OVERWRITES -->
     		
         <link href="css/navbar.css" rel="stylesheet">
-    		<link href="css/header.css" rel="stylesheet">
-    		<link href="css/button.css" rel="stylesheet">
-    		
-    		<link href="css/carousel.css" rel="stylesheet">
-    		
-    		<link href="css/colours/darkblue.css" rel="stylesheet">
+		<link href="css/header.css" rel="stylesheet">
+		<link href="css/button.css" rel="stylesheet">
+		
+		<link href="css/carousel.css" rel="stylesheet">
+		
+		<link href="css/colours/darkblue.css" rel="stylesheet">
             
     </head>
     
@@ -51,17 +51,17 @@
 	        
 	        <div id="navbar" class="navbar-collapse collapse">
 	          <!-- NAVBAR - SIGN IN FORM -->
-	          <form action="dashboard.php" class="navbar-form navbar-right">
+	          <form id="signinForm" action="" class="navbar-form navbar-right">
 	            <div class="form-group">
 	              <!-- NAVBAR - LOGIN - EMAIL -->
-	              <input type="text" placeholder="Email" class="form-control">
+	              <input id="usernameInput" type="text" placeholder="Email" class="form-control">
 	            </div>
 	            <div class="form-group">
 	              <!-- NAVBAR - LOGIN - PASSWORD -->
-	              <input type="password" placeholder="Password" class="form-control">
+	              <input id="passwordInput" type="password" placeholder="Password" class="form-control">
 	            </div>
 	            <!-- NAVBAR - LOGIN - SUBMIT BUTTON -->
-	            <button type="submit" class="btn btn-signin">Sign in</button>
+	            <button onclick="checkSignIn()" type="submit" class="btn btn-signin">Sign in</button>
 	          </form>
 	        </div><!--/.navbar-collapse -->
 	      </div>
@@ -80,7 +80,7 @@
       <div class="carousel-inner">
         <!-- CAROUSEL - ITEM ONE -->
         <div class="item active">
-          <img src="img/temp1.jpg" alt="Chania">
+          <img src="img/MeMG_Main.png" alt="Chania">
           <div class="carousel-caption">
             <h3></h3>
             <p></p>
@@ -158,6 +158,19 @@
       </footer>
       
     </div> <!-- /container -->
-
+	<script>
+		function checkSignIn() {
+			var userCheck = !( $('#usernameInput').val() === "" );
+			var passCheck = !( $('#passwordInput').val() === "" );
+			if( userCheck && passCheck ) {
+				console.log("Input Correct");
+				//window.location.replace("/dashboard.php");
+				$("#signinForm").attr('action', '/dashboard.php');
+				return;
+			}
+			console.log("Input Failed");
+			$("#signinForm").attr('action', '');
+		}
+	</script>
     </body>
 </html>
