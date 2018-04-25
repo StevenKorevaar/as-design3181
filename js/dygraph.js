@@ -9,18 +9,18 @@
 	  const blobService = AzureStorage.Blob.createBlobServiceWithSas(blobUri, account.sas);
 	  
 	  // Reading Data from the Blob
-	  blobService.getBlobToText("laika-memg-container","laika-hub/00/2018/04/22/10/12", (error, results) =>{
+	  blobService.getBlobToText("laika-memg-container","laika-hub/00/2018/04/25/05/30", (error, results) =>{
 			if(error){
 			  
 			}
 			else{
 				var datastring = results;
-				var pos = datastring.indexOf("TRIANGLE");
+				var pos = datastring.indexOf("Aaron");
 				var datas = [];
 				while (pos > 0){
-				var res = datastring.slice(pos+12, pos+615);
+				var res = datastring.slice(pos+9, pos+612);
 				datas.push(res);
-				pos = datastring.indexOf("TRIANGLE",pos+10);
+				pos = datastring.indexOf("Aaron",pos+10);
 				}
 				var i,j;
 				var numberOfSamples = (datas[0].length)/3;
