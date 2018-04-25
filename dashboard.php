@@ -35,6 +35,7 @@
         <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/dygraph/2.1.0/dygraph.min.css" />
     	
         <script src="js/dygraph.js"></script>
+		<script src="js/azure-storage.blob.min.js"></script>
         
     </head>
     
