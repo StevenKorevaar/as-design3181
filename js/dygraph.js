@@ -8,8 +8,47 @@
 	  const blobUri = 'https://' + account.name + '.blob.core.windows.net';
 	  const blobService = AzureStorage.Blob.createBlobServiceWithSas(blobUri, account.sas);
 	  
+	  // Reading the names of the blobs into the list
+	  blobService.listBlobsSegmented("laika-memg-container", null, (error, results) => {
+		  if(error){
+			  
+		  } else{
+			  results.entries.forEach(blob => {
+				  var x = document.getElementById("mySelect");
+				  var option = document.createElement("option");
+				  option.text = blob.name;
+				  x.add(option)
+			  });
+		    }
+	  });
+	  
+	  // Setting up an empty graph
+
+	g = new Dygraph(
+		
+	document.getElementById("div_g"), "X\n",
+	{
+		drawPoints:true,
+		showRoller:true,
+		labels: ['Sample', 'Value']
+		
+	});
+
+	  
+});
+
+function refreshGraph() {
+	
+	  // Setting up connection to Azure Blod Storage
+	  const account = {
+		name: "laikamemgstorage",
+		sas: "sv=2017-04-17&ss=bfqt&srt=sco&sp=rwdl&st=2018-04-21T05%3A21%3A21Z&se=2019-04-22T05%3A21%3A00Z&sig=lXzkeEHwkI1KF5TKHvAeSD3x7XABYERYs7%2Fj8VIRxEE%3D"
+		};
+	  const blobUri = 'https://' + account.name + '.blob.core.windows.net';
+	  const blobService = AzureStorage.Blob.createBlobServiceWithSas(blobUri, account.sas);
+	
 	  // Reading Data from the Blob
-	  blobService.getBlobToText("laika-memg-container","laika-hub/00/2018/04/25/05/30", (error, results) =>{
+	  blobService.getBlobToText("laika-memg-container", mySelect.options[mySelect.selectedIndex].value, (error, results) =>{
 			if(error){
 			  
 			}
@@ -23,9 +62,11 @@
 				pos = datastring.indexOf("Aaron",pos+10);
 				}
 				var i,j;
-				var numberOfSamples = (datas[0].length)/3;
+				var numberOfSamples;
 				var samples = [];
 				for(i = 0; i < datas.length; i++){
+					numberOfSamples = datas[i].length/3;
+					console.log(numberOfSamples);
 					for( j = 0; j < numberOfSamples; j++){
 					var sampleHex = datas[i].slice(j*3,j*3+3);
 					samples.push(parseInt(sampleHex,16));
@@ -33,14 +74,18 @@
 				}
 			}
 			
+			console.log(datas.length);
+			
 			var graphData = [];
 			for (i = 0; i < samples.length; i++){
 			graphData.push([i, samples[i]]);
 			}
+			
+			console.log(samples.length);
 					
 			g = new Dygraph(
 		
-			document.getElementById("div_g"),graphData,
+			document.getElementById("div_g"), graphData,
 			{
 				drawPoints:true,
 				showRoller:true,
@@ -49,8 +94,8 @@
 			});
 			
 		});
-	  
-}
+	
+};
 	  
 	  /*
 	  var data = [];
@@ -78,4 +123,3 @@
       }, 1000);
     }
 	*/
-);

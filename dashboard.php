@@ -88,6 +88,13 @@
         </p>
       </div>
     </div>
+	
+	<div class = "container">
+	<form>
+		<select id = "mySelect" onchange="refreshGraph()" size = "1" style="height: 30px; line-height: 30px">
+		</select>
+	</form>
+	</div>
     
     <div id="div_g" style="min-width: 310px; max-width: 1200px; height: 400px; margin: 0 auto"></div>
     <!--
