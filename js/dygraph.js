@@ -54,13 +54,83 @@ function refreshGraph() {
 			}
 			else{
 				var datastring = results;
-				var pos = datastring.indexOf("Aaron");
+				var pos = datastring.indexOf("EMG");
 				var datas = [];
 				while (pos > 0){
-				var res = datastring.slice(pos+9, pos+612);
+				var res = datastring.slice(pos+7, pos+607);
 				datas.push(res);
-				pos = datastring.indexOf("Aaron",pos+10);
+				pos = datastring.indexOf("EMG",pos+10);
 				}
+				
+				var decodedDatas = [];
+				var i,j;
+				
+				for(i=0;i < datas.length; i++){
+					decodedDatas.push(decode(datas[i]));
+				}
+				
+				var samples = [];
+				
+				for(i=0;i < decodedDatas.length; i++){
+					for(j = 0; j < decodedDatas[i].length; j++){
+						samples.push(decodedDatas[i][j]);
+						//graphData.push([(300*i)+j, decodedDatas[i][j]]);
+					}
+				}
+				
+				var smoothSamples = [];
+				for(i=0;i < samples.length; i++){
+					if(i==0){
+						smoothSamples.push(0.1*samples[i]);
+					}
+					else{
+						smoothSamples.push(0.98*smoothSamples[i-1]+0.1*samples[i]);
+					}
+				}
+				
+				var graphData = [];
+				for(i=0;i < samples.length; i++){
+					if(i%10==0)
+					graphData.push([i, samples[i], smoothSamples[i], 600]);
+					else
+					graphData.push([i, samples[i], smoothSamples[i], null]);
+				}
+				
+				for(i=0;i < graphData.length; i++){
+					console.log(graphData[i][0]);
+				}
+	
+				g = new Dygraph(
+		
+				document.getElementById("div_g"), graphData,
+				{
+					title: "Tim's Wicked Quad",
+					labels: ['Sample', 'Raw', 'Smooth', 'Threshold'],
+					series: {
+						'Smooth':{
+							strokeWidth: 3,
+							color: "#A93226"
+						},
+						
+						'Raw':{
+							color: "#85929E"
+						},
+						
+						'Threshold':{
+							strokeWidth: 0,
+							drawPoints: true,
+							pointSize: 1,
+							highlightCircleSize: 0
+						}
+					}
+				
+					//drawPoints:true,
+					//showRoller:true,
+					//labels: ['Sample', 'Value']
+						
+				});
+				
+				/*
 				var i,j;
 				var numberOfSamples;
 				var samples = [];
@@ -72,8 +142,10 @@ function refreshGraph() {
 					samples.push(parseInt(sampleHex,16));
 					}
 				}
+				*/
 			}
 			
+			/*
 			console.log(datas.length);
 			
 			var graphData = [];
@@ -92,9 +164,43 @@ function refreshGraph() {
 				labels: ['Sample', 'Value']
 					
 			});
-			
+			*/
 		});
 	
+};
+
+function decode(dataStr) {
+    var encodedData = [];
+    var n = 0;
+    for(var i = 0; i < dataStr.length; ++i) {
+      encodedData[n] = dataStr[i] + dataStr[i+1];
+      ++n;
+      ++i;
+    }
+      
+    validChars = [
+        '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 
+        'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o',
+        'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B',
+        'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O',
+        'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '!', '#',  
+        '%', '&', '(', ')', '*', '+', ',', '-', '.', '/', ':', ';', '<',  
+        '=', '>', '?', '[', ']', '^', '_', '{', '|', '}', '~'];
+    
+    var decodedData = [encodedData.length];
+    
+    for(var n = 0; n < encodedData.length; ++n) {
+        
+      var result = encodedData[n];
+      var encodedVal = 0;
+        
+      for(var i = 0; i < result.length ; ++i) {
+        encodedVal = encodedVal * validChars.length + validChars.indexOf( result[i] );
+      }
+        
+      decodedData[n] = encodedVal;
+    }
+    return decodedData;
 };
 	  
 	  /*
