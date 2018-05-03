@@ -57,19 +57,10 @@
 	        </div>
 	        
 	        <div id="navbar" class="navbar-collapse collapse">
-	          <!-- NAVBAR - SIGN IN FORM -->
-	          <form class="navbar-form navbar-right">
-	            <div class="form-group">
-	              <!-- NAVBAR - LOGIN - EMAIL -->
-	              <input type="text" placeholder="Email" class="form-control">
-	            </div>
-	            <div class="form-group">
-	              <!-- NAVBAR - LOGIN - PASSWORD -->
-	              <input type="password" placeholder="Password" class="form-control">
-	            </div>
-	            <!-- NAVBAR - LOGIN - SUBMIT BUTTON -->
-	            <button type="submit" class="btn btn-signin">Sign in</button>
-	          </form>
+	          <span class="navbar-form navbar-right" style="    color: white;
+				padding: inherit;
+				font-size: x-large;"
+	> Welcome, Physio! </span>
 	        </div><!--/.navbar-collapse -->
 	      </div>
 	    </nav>
@@ -100,6 +91,8 @@
     <!--
     <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
     -->
+	
+	<!--
     <div class="container">
         <main class="col-sm-9 offset-sm-3 col-md-10 offset-md-2 pt-3">
           <h1>Dashboard</h1>
@@ -233,7 +226,7 @@
           </div>
         </main>
       </div>
-
+-->
       
       <div class="container">
         <hr>
