@@ -74,8 +74,12 @@
         <h1>Welcome to the Dashboard!</h1>
         <p>This page is where you can see your devices datalogs and perform any actions that the device can do!</p>
         <p>
-          <a class="btn btn-primary btn-lg blueberry" href="#" role="button">Learn more &raquo;</a>
-        </p>
+          <a class="btn btn-primary btn-lg blueberry" href="#" role="button">Set Extension Threshold</a>
+		  <a class="btn btn-primary btn-lg blueberry" href="#" role="button">Set Muscle Activation Threshold</a>
+          <a class="btn btn-primary btn-lg blueberry" href="#" role="button">Edit Goals</a>
+          <a class="btn btn-primary btn-lg blueberry" href="#" role="button">Compare</a>
+
+		</p>
       </div>
     </div>
 	

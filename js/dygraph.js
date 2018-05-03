@@ -91,7 +91,7 @@ function refreshGraph() {
 				var graphData = [];
 				for(i=0;i < samples.length; i++){
 					if(i%10==0)
-					graphData.push([i, samples[i], smoothSamples[i], 600]);
+					graphData.push([i, samples[i], smoothSamples[i], 300]);
 					else
 					graphData.push([i, samples[i], smoothSamples[i], null]);
 				}
