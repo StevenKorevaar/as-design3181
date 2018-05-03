@@ -34,8 +34,9 @@
         <script src="//cdnjs.cloudflare.com/ajax/libs/dygraph/2.1.0/dygraph.min.js"></script>
         <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/dygraph/2.1.0/dygraph.min.css" />
     	
-        <script src="js/dygraph.js"></script>
 		<script src="js/azure-storage.blob.min.js"></script>
+        <script src="js/dygraph.js"></script>
+		
         
     </head>
     
@@ -59,8 +60,7 @@
 	        <div id="navbar" class="navbar-collapse collapse">
 	          <span class="navbar-form navbar-right" style="    color: white;
 				padding: inherit;
-				font-size: x-large;"
-	> Welcome, Physio! </span>
+				font-size: x-large;"> Welcome, Physio! </span>
 	        </div><!--/.navbar-collapse -->
 	      </div>
 	    </nav>
@@ -74,7 +74,6 @@
         <h1>Welcome to the Dashboard!</h1>
         <p>This page is where you can see your devices datalogs and perform any actions that the device can do!</p>
         <p>
-          <a class="btn btn-primary btn-lg btn-red" href="#" role="button">Learn more &raquo;</a>
           <a class="btn btn-primary btn-lg blueberry" href="#" role="button">Learn more &raquo;</a>
         </p>
       </div>
