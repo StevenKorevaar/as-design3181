@@ -7,17 +7,24 @@
 		};
 	  const blobUri = 'https://' + account.name + '.blob.core.windows.net';
 	  const blobService = AzureStorage.Blob.createBlobServiceWithSas(blobUri, account.sas);
-	  
+	  var randID = 0;
 	  // Reading the names of the blobs into the list
 	  blobService.listBlobsSegmented("laika-memg-container", null, (error, results) => {
 		  if(error){
 			  
 		  } else{
 			  results.entries.forEach(blob => {
+          /*
 				  var x = document.getElementById("mySelect");
 				  var option = document.createElement("option");
 				  option.text = blob.name;
 				  x.add(option)
+          */
+          randID++;
+          var ele = "<tr><th>" +randID+"</th><td>"+blob.name+"</td><td>"+( Math.round(Math.random()*2 + 1) )+"</td><td style=\"text-align: center;\"><button onclick=\"refreshGraph2('"+blob.name+"')\" class=\"btn btn-warning\">Show</button></td></tr>";
+          
+          $("#sessionsBody").prepend(ele);
+          
 			  });
 		    }
 	  });
@@ -52,18 +59,104 @@
                         drawPoints: true,
                         labels: ['Time', 'Number of Reps']
                       });
-  /*
-  // It sucks that these things aren't objects, and we need to store state in window.
-  window.intervalId = setInterval(function() {
-    var x = new Date();  // current time
-    var y = Math.random();
-    data.push([x, y]);
-    g.updateOptions( { 'file': data } );
-  }, 1000);
-  */
-    
-    
 });
+
+function refreshGraph2(blobname) {
+    //console.log(blobname);
+	  // Setting up connection to Azure Blob Storage
+	  const account = {
+		name: "laikamemgstorage",
+		sas: "sv=2017-04-17&ss=bfqt&srt=sco&sp=rwdl&st=2018-04-21T05%3A21%3A21Z&se=2019-04-22T05%3A21%3A00Z&sig=lXzkeEHwkI1KF5TKHvAeSD3x7XABYERYs7%2Fj8VIRxEE%3D"
+		};
+	  const blobUri = 'https://' + account.name + '.blob.core.windows.net';
+	  const blobService = AzureStorage.Blob.createBlobServiceWithSas(blobUri, account.sas);
+	
+    //console.log("in here");
+    //var blobname = "laika-hub/00/2018/05/03/03/48";
+	  // Reading Data from the Blob
+	  blobService.getBlobToText("laika-memg-container", blobname, (error, results) =>{
+			if(error){
+			  
+			}
+			else{
+				var datastring = results;
+				var pos = datastring.indexOf("EMG");
+				var datas = [];
+				while (pos > 0){
+				var res = datastring.slice(pos+7, pos+607);
+				datas.push(res);
+				pos = datastring.indexOf("EMG",pos+10);
+				}
+				
+				var decodedDatas = [];
+				var i,j;
+				
+				for(i=0;i < datas.length; i++){
+					decodedDatas.push(decode(datas[i]));
+				}
+				
+				var samples = [];
+				
+				for(i=0;i < decodedDatas.length; i++){
+					for(j = 0; j < decodedDatas[i].length; j++){
+						samples.push(decodedDatas[i][j]);
+						//graphData.push([(300*i)+j, decodedDatas[i][j]]);
+					}
+				}
+				
+				var smoothSamples = [];
+				for(i=0;i < samples.length; i++){
+					if(i==0){
+						smoothSamples.push(0.1*samples[i]);
+					}
+					else{
+						smoothSamples.push(0.98*smoothSamples[i-1]+0.1*samples[i]);
+					}
+				}
+				
+				var graphData = [];
+				for(i=0;i < samples.length; i++){
+					if(i%1==0)
+					graphData.push([i, samples[i], smoothSamples[i], 300]);
+					else
+					graphData.push([i, samples[i], smoothSamples[i], null]);
+				}
+	
+				g = new Dygraph(
+		
+				document.getElementById("div_g"), graphData,
+				{
+          ylabel: "Muscle Activation",
+					title: "Tim's Wicked Quad",
+					labels: ['Sample', 'Raw', 'Smooth', 'Threshold'],
+					series: {
+						'Smooth':{
+							strokeWidth: 3,
+							color: "#A93226"
+						},
+						
+						'Raw':{
+							color: "#85929E"
+						},
+						
+						'Threshold':{
+							strokeWidth: 0,
+							drawPoints: true,
+							pointSize: 1,
+							highlightCircleSize: 0
+						}
+					}
+
+				});
+				
+
+			}
+			
+
+		});
+	
+};
+
 
 function refreshGraph() {
 	

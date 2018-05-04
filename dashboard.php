@@ -38,7 +38,7 @@
       	<link href="css/dashboard.css" rel="stylesheet">
       	
       	<link href="css/colours/colours.css" rel="stylesheet">
-        
+
     </head>
     
     <body>
@@ -78,14 +78,13 @@
           <h1>Me-MG Dashboard</h1>
           
           <p>
-            Current Device Selected:<form>
+            Current Device Selected:
               <select id = "deviceSelect" onchange="" size = "1" style="height: 30px; line-height: 30px; margin: 10px;">
                 <option value="1">Device#101</option>
                 <option value="2">Device#102</option>
                 <option value="3">Device#103</option>
                 <option value="3">Device#104</option>
               </select>
-            </form>
           </p>
           
           
@@ -111,20 +110,50 @@
       
       <div class="container">
         <h1>Muscle Activity</h1>
-        <div id="div_g" style="min-width: 300px; max-width: 1200px; height: 400px; ">
+        <hr/>
+        <div class="row">
+          <div class="col-md-4" style="height: 400px; overflow: auto;">
+            <table id="sessionsTable" class="
+                table table-sm table-striped table-bordered table-hover table-responsive" >
+                
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Session Name</th>
+                  <th scope="col">#Reps</th>
+                  <th scope="col">Display</th>
+                </tr>
+              </thead>
+              <div>
+              <tbody id="sessionsBody" style="">
+              
+              </tbody>
+                  
+            </table>
+          </div>
+          <div class="container" style="margin-right:10px;">
+            <div id="div_g" class="col-md-8" style="min-width: 300px; max-width: 1200px; height: 400px; ">
+            </div>
+          </div>
         </div>
+        
+        <hr/>
       </div>
-  
+      
+      <!--
       <div class = "container">
         <form>
           <select id = "mySelect" onchange="refreshGraph()" size = "1" style="height: 30px; line-height: 30px; margin: 10px;">
           </select>
         </form>
       </div>
+      -->
+      
       
       
       <div class="container">
         <h1>Patient's Progress</h1>
+        <hr/>
         <div id="div_Progress" style="min-width: 300px; max-width: 1200px; height: 400px; "></div>
       </div>
       
