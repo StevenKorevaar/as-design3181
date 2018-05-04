@@ -7,20 +7,29 @@
         <meta name="author" content="">
         <link rel="icon" href="img/favicon.ico">
         <!-- WEBPAGE TITLE -->
-        <title>Engineering Design 3A - Telstra Challenge Back End</title>
+        <title>Me-MG Dashboard</title>
         
         <!-- Latest compiled and minified CSS -->
-    	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    		
+
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-        <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
         
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+        <script src="js/jquery-ui.min.js"></script>
+
         
-        <!-- Latest compiled and minified JavaScript -->
         <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    		
-    	  <!-- CSS OVERWRITES -->
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"></script>
+        
+        <script src="//cdnjs.cloudflare.com/ajax/libs/dygraph/2.1.0/dygraph.min.js"></script>
+        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/dygraph/2.1.0/dygraph.min.css" />
+    	
+        <script src="js/azure-storage.blob.min.js"></script>
+        <script src="js/dygraph.js"></script>
+        
+		
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        
+        <!-- CSS OVERWRITES -->
     	
         <link href="css/navbar.css" rel="stylesheet">
       	<link href="css/header.css" rel="stylesheet">
@@ -29,14 +38,6 @@
       	<link href="css/dashboard.css" rel="stylesheet">
       	
       	<link href="css/colours/colours.css" rel="stylesheet">
-        
-        
-        <script src="//cdnjs.cloudflare.com/ajax/libs/dygraph/2.1.0/dygraph.min.js"></script>
-        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/dygraph/2.1.0/dygraph.min.css" />
-    	
-		<script src="js/azure-storage.blob.min.js"></script>
-        <script src="js/dygraph.js"></script>
-		
         
     </head>
     
@@ -69,190 +70,63 @@
 	    </nav>
     
 
-    <!-- MAIN CONTENT - COLUMNS -->
+      <!-- MAIN CONTENT - COLUMNS -->
 
-		<div class="jumbotron noCarousel">
+      <div class="jumbotron noCarousel">
+        <div class="container">
+          <!-- MAIN CONTENT - HEADER -->
+          <h1>Me-MG Dashboard</h1>
+          
+          <p>
+            Current Device Selected:<form>
+              <select id = "deviceSelect" onchange="" size = "1" style="height: 30px; line-height: 30px; margin: 10px;">
+                <option value="1">Device#101</option>
+                <option value="2">Device#102</option>
+                <option value="3">Device#103</option>
+                <option value="3">Device#104</option>
+              </select>
+            </form>
+          </p>
+          
+          
+          
+          <div class="row" style="text-align: center; margin-top:10px;">
+            <div class="col-md-4 ">
+              <a class="btn btn-primary btn-lg blueberry dashboardBtns" href="#" role="button">Set Extension Threshold</a>
+            </div>
+            
+            <div class="col-md-4 ">
+              <a class="btn btn-primary btn-lg blueberry dashboardBtns" href="#" role="button">Set Muscle Activation Threshold</a>
+            </div>
+            
+            <div class="col-md-2 ">
+              <a class="btn btn-primary btn-lg blueberry dashboardBtns" href="#" role="button">Edit Goals</a>
+            </div>
+            <div class="col-md-2 ">
+              <a class="btn btn-primary btn-lg blueberry dashboardBtns" href="#" role="button">Compare</a>
+            </div>
+          </p>
+        </div>
+      </div>
+      
       <div class="container">
-        <!-- MAIN CONTENT - HEADER -->
-        <h1>Me-MG Dashboard</h1>
-        
-        <p>
-          Current Device Selected:<form>
-            <select id = "deviceSelect" onchange="" size = "1" style="height: 30px; line-height: 30px; margin: 10px;">
-              <option value="1">Device#101</option>
-              <option value="2">Device#102</option>
-              <option value="3">Device#103</option>
-              <option value="3">Device#104</option>
-            </select>
-          </form>
-        </p>
-        
-        <div class="row" style="text-align: center;">
-          <div class="col-md-4 ">
-            <a class="btn btn-primary btn-lg blueberry dashboardBtns" href="#" role="button">Set Extension Threshold</a>
-          </div>
-          
-          <div class="col-md-4 ">
-            <a class="btn btn-primary btn-lg blueberry dashboardBtns" href="#" role="button">Set Muscle Activation Threshold</a>
-          </div>
-          
-          <div class="col-md-2 ">
-            <a class="btn btn-primary btn-lg blueberry dashboardBtns" href="#" role="button">Edit Goals</a>
-          </div>
-          <div class="col-md-2 ">
-            <a class="btn btn-primary btn-lg blueberry dashboardBtns" href="#" role="button">Compare</a>
-          </div>
-        </p>
+        <h1>Muscle Activity</h1>
+        <div id="div_g" style="min-width: 300px; max-width: 1200px; height: 400px; ">
+        </div>
       </div>
-    </div>
-	
-	<div class = "container">
-	<form>
-		<select id = "mySelect" onchange="refreshGraph()" size = "1" style="height: 30px; line-height: 30px; margin: 10px;">
-		</select>
-	</form>
-	</div>
-    
-    <div id="div_g" style="min-width: 300px; max-width: 1200px; height: 400px; "></div>
-    <!--
-    <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
-    -->
-	
-	<!--
-    <div class="container">
-        <main class="col-sm-9 offset-sm-3 col-md-10 offset-md-2 pt-3">
-          <h1>Dashboard</h1>
-          <h2>Section title</h2>
-          <div class="table-responsive">
-            <table class="table table-striped">
-              <thead>
-                <tr>
-                  <th>#</th>
-                  <th>Header</th>
-                  <th>Header</th>
-                  <th>Header</th>
-                  <th>Header</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>1,001</td>
-                  <td>Lorem</td>
-                  <td>ipsum</td>
-                  <td>dolor</td>
-                  <td>sit</td>
-                </tr>
-                <tr>
-                  <td>1,002</td>
-                  <td>amet</td>
-                  <td>consectetur</td>
-                  <td>adipiscing</td>
-                  <td>elit</td>
-                </tr>
-                <tr>
-                  <td>1,003</td>
-                  <td>Integer</td>
-                  <td>nec</td>
-                  <td>odio</td>
-                  <td>Praesent</td>
-                </tr>
-                <tr>
-                  <td>1,003</td>
-                  <td>libero</td>
-                  <td>Sed</td>
-                  <td>cursus</td>
-                  <td>ante</td>
-                </tr>
-                <tr>
-                  <td>1,004</td>
-                  <td>dapibus</td>
-                  <td>diam</td>
-                  <td>Sed</td>
-                  <td>nisi</td>
-                </tr>
-                <tr>
-                  <td>1,005</td>
-                  <td>Nulla</td>
-                  <td>quis</td>
-                  <td>sem</td>
-                  <td>at</td>
-                </tr>
-                <tr>
-                  <td>1,006</td>
-                  <td>nibh</td>
-                  <td>elementum</td>
-                  <td>imperdiet</td>
-                  <td>Duis</td>
-                </tr>
-                <tr>
-                  <td>1,007</td>
-                  <td>sagittis</td>
-                  <td>ipsum</td>
-                  <td>Praesent</td>
-                  <td>mauris</td>
-                </tr>
-                <tr>
-                  <td>1,008</td>
-                  <td>Fusce</td>
-                  <td>nec</td>
-                  <td>tellus</td>
-                  <td>sed</td>
-                </tr>
-                <tr>
-                  <td>1,009</td>
-                  <td>augue</td>
-                  <td>semper</td>
-                  <td>porta</td>
-                  <td>Mauris</td>
-                </tr>
-                <tr>
-                  <td>1,010</td>
-                  <td>massa</td>
-                  <td>Vestibulum</td>
-                  <td>lacinia</td>
-                  <td>arcu</td>
-                </tr>
-                <tr>
-                  <td>1,011</td>
-                  <td>eget</td>
-                  <td>nulla</td>
-                  <td>Class</td>
-                  <td>aptent</td>
-                </tr>
-                <tr>
-                  <td>1,012</td>
-                  <td>taciti</td>
-                  <td>sociosqu</td>
-                  <td>ad</td>
-                  <td>litora</td>
-                </tr>
-                <tr>
-                  <td>1,013</td>
-                  <td>torquent</td>
-                  <td>per</td>
-                  <td>conubia</td>
-                  <td>nostra</td>
-                </tr>
-                <tr>
-                  <td>1,014</td>
-                  <td>per</td>
-                  <td>inceptos</td>
-                  <td>himenaeos</td>
-                  <td>Curabitur</td>
-                </tr>
-                <tr>
-                  <td>1,015</td>
-                  <td>sodales</td>
-                  <td>ligula</td>
-                  <td>in</td>
-                  <td>libero</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </main>
+  
+      <div class = "container">
+        <form>
+          <select id = "mySelect" onchange="refreshGraph()" size = "1" style="height: 30px; line-height: 30px; margin: 10px;">
+          </select>
+        </form>
       </div>
--->
+      
+      
+      <div class="container">
+        <h1>Patient's Progress</h1>
+        <div id="div_Progress" style="min-width: 300px; max-width: 1200px; height: 400px; "></div>
+      </div>
       
       <div class="container">
         <hr>

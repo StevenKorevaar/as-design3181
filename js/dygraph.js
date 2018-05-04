@@ -29,17 +29,45 @@
 	document.getElementById("div_g"), "X\n",
 	{
 		drawPoints:true,
-		showRoller:true,
-		labels: ['Sample', 'Value']
-		
+		labels: ['Sample', 'Value'],
+		legend: 'always',
 	});
 
-	  
+  var data = [];
+  var startVal = 2;
+  for (var i = 1; i <= 30; i++) {
+    var day = i % 28;
+    if (day < 10) { day = "0"+i; }
+    
+    if (startVal < 0) { startVal = 0; }
+    
+    var curVal = [new Date("2018-04-"+day), startVal];
+    startVal = startVal + Math.round(Math.random()*3 - 1);
+    data.push(curVal);
+  }
+
+  var g = new Dygraph(document.getElementById("div_Progress"), data,
+                      {
+                        ylabel: "Number of Reps",
+                        drawPoints: true,
+                        labels: ['Time', 'Number of Reps']
+                      });
+  /*
+  // It sucks that these things aren't objects, and we need to store state in window.
+  window.intervalId = setInterval(function() {
+    var x = new Date();  // current time
+    var y = Math.random();
+    data.push([x, y]);
+    g.updateOptions( { 'file': data } );
+  }, 1000);
+  */
+    
+    
 });
 
 function refreshGraph() {
 	
-	  // Setting up connection to Azure Blod Storage
+	  // Setting up connection to Azure Blob Storage
 	  const account = {
 		name: "laikamemgstorage",
 		sas: "sv=2017-04-17&ss=bfqt&srt=sco&sp=rwdl&st=2018-04-21T05%3A21%3A21Z&se=2019-04-22T05%3A21%3A00Z&sig=lXzkeEHwkI1KF5TKHvAeSD3x7XABYERYs7%2Fj8VIRxEE%3D"
