@@ -24,11 +24,11 @@
     	
         <link href="css/navbar.css" rel="stylesheet">
       	<link href="css/header.css" rel="stylesheet">
-    	<link href="css/button.css" rel="stylesheet">
+        <link href="css/button.css" rel="stylesheet">
     		
       	<link href="css/dashboard.css" rel="stylesheet">
       	
-      	<link href="css/colours/darkblue.css" rel="stylesheet">
+      	<link href="css/colours/colours.css" rel="stylesheet">
         
         
         <script src="//cdnjs.cloudflare.com/ajax/libs/dygraph/2.1.0/dygraph.min.js"></script>
@@ -54,7 +54,10 @@
 	          </button>
 	          
 	          <!-- NAVBAR - PROJECT NAME-->
-	          <a class="navbar-brand" href="index.html"> Telstra Challenge</a>
+	          <a class="navbar-brand" href="/"> 
+              Me-MG
+            </a>
+            <img src="img/MeMG_Logo1.png" style="width: 50px; height: auto; vertical-align: middle; margin-left: -10px; padding: 8px;" class="navbar-brand"/>
 	        </div>
 	        
 	        <div id="navbar" class="navbar-collapse collapse">
@@ -71,26 +74,46 @@
 		<div class="jumbotron noCarousel">
       <div class="container">
         <!-- MAIN CONTENT - HEADER -->
-        <h1>Welcome to the Dashboard!</h1>
-        <p>This page is where you can see your devices datalogs and perform any actions that the device can do!</p>
+        <h1>Me-MG Dashboard</h1>
+        
         <p>
-          <a class="btn btn-primary btn-lg blueberry" href="#" role="button">Set Extension Threshold</a>
-		  <a class="btn btn-primary btn-lg blueberry" href="#" role="button">Set Muscle Activation Threshold</a>
-          <a class="btn btn-primary btn-lg blueberry" href="#" role="button">Edit Goals</a>
-          <a class="btn btn-primary btn-lg blueberry" href="#" role="button">Compare</a>
-
-		</p>
+          Current Device Selected:<form>
+            <select id = "deviceSelect" onchange="" size = "1" style="height: 30px; line-height: 30px; margin: 10px;">
+              <option value="1">Device#101</option>
+              <option value="2">Device#102</option>
+              <option value="3">Device#103</option>
+              <option value="3">Device#104</option>
+            </select>
+          </form>
+        </p>
+        
+        <div class="row" style="text-align: center;">
+          <div class="col-md-4 ">
+            <a class="btn btn-primary btn-lg blueberry dashboardBtns" href="#" role="button">Set Extension Threshold</a>
+          </div>
+          
+          <div class="col-md-4 ">
+            <a class="btn btn-primary btn-lg blueberry dashboardBtns" href="#" role="button">Set Muscle Activation Threshold</a>
+          </div>
+          
+          <div class="col-md-2 ">
+            <a class="btn btn-primary btn-lg blueberry dashboardBtns" href="#" role="button">Edit Goals</a>
+          </div>
+          <div class="col-md-2 ">
+            <a class="btn btn-primary btn-lg blueberry dashboardBtns" href="#" role="button">Compare</a>
+          </div>
+        </p>
       </div>
     </div>
 	
 	<div class = "container">
 	<form>
-		<select id = "mySelect" onchange="refreshGraph()" size = "1" style="height: 30px; line-height: 30px">
+		<select id = "mySelect" onchange="refreshGraph()" size = "1" style="height: 30px; line-height: 30px; margin: 10px;">
 		</select>
 	</form>
 	</div>
     
-    <div id="div_g" style="min-width: 310px; max-width: 1200px; height: 400px; margin: 0 auto"></div>
+    <div id="div_g" style="min-width: 300px; max-width: 1200px; height: 400px; "></div>
     <!--
     <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
     -->

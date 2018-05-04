@@ -15,6 +15,10 @@ body {
 /* Carousel base class */
 .carousel {
     margin-top: 2rem;
+    max-width: 1200px;
+    align-content: center;
+    padding: 0px;
+}
 }
 /* Since positioning the image, we need to help out the caption */
 .carousel-caption {

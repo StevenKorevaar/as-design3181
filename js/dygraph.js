@@ -90,15 +90,16 @@ function refreshGraph() {
 				
 				var graphData = [];
 				for(i=0;i < samples.length; i++){
-					if(i%10==0)
+					if(i%1==0)
 					graphData.push([i, samples[i], smoothSamples[i], 300]);
 					else
 					graphData.push([i, samples[i], smoothSamples[i], null]);
 				}
-				
+				/*
 				for(i=0;i < graphData.length; i++){
 					console.log(graphData[i][0]);
 				}
+        */
 	
 				g = new Dygraph(
 		
