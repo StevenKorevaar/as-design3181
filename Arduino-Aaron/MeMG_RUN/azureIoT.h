@@ -9,8 +9,7 @@
 
 
 // Hardcoded externally generated SAS key, (bypasses generateSas function)
-
-#define SAS_AUTH_HEADER "Authorization: SharedAccessSignature sr=laika-hub.azure-devices.net&sig=dxER3TtcRfNLVGojsNO2YCfVZT%2FXCMD6nU1fofgXVAQ%3D&se=1556299800"
+#define SAS_AUTH_HEADER "Authorization: SharedAccessSignature sr=laika-hub.azure-devices.net&sig=O24Q%2FGRfopw8IL7FeJwWy%2FSZPcDSV%2B7O%2FdPTZQEYo%2Fg%3D&se=1556790333"
 
 class AzureIoT
 {
