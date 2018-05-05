@@ -116,7 +116,7 @@ function refreshGraph2(blobname) {
 				
 				var graphData = [];
 				for(i=0;i < samples.length; i++){
-					if(i%1==0)
+					if(i%25==0)
 					graphData.push([i, samples[i], smoothSamples[i], 300]);
 					else
 					graphData.push([i, samples[i], smoothSamples[i], null]);
@@ -128,6 +128,7 @@ function refreshGraph2(blobname) {
 				{
           ylabel: "Muscle Activation",
 					title: "Tim's Wicked Quad",
+					legend: "always",
 					labels: ['Sample', 'Raw', 'Smooth', 'Threshold'],
 					series: {
 						'Smooth':{
@@ -227,6 +228,7 @@ function refreshGraph() {
 				document.getElementById("div_g"), graphData,
 				{
 					title: "Tim's Wicked Quad",
+					legend: "always",
 					labels: ['Sample', 'Raw', 'Smooth', 'Threshold'],
 					series: {
 						'Smooth':{
@@ -324,6 +326,15 @@ function decode(dataStr) {
     }
     return decodedData;
 };
+
+function toggleCompare(){
+	var x = document.getElementById("compareTable");
+	if(x.style.display === "none"){
+		x.style.display = "block";
+	} else{
+		x.style.display = "none";
+	}
+}
 	  
 	  /*
 	  var data = [];

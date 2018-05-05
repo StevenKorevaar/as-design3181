@@ -22,6 +22,7 @@
         
         <script src="//cdnjs.cloudflare.com/ajax/libs/dygraph/2.1.0/dygraph.min.js"></script>
         <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/dygraph/2.1.0/dygraph.min.css" />
+		<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     	
         <script src="js/azure-storage.blob.min.js"></script>
         <script src="js/dygraph.js"></script>
@@ -102,11 +103,33 @@
               <a class="btn btn-primary btn-lg blueberry dashboardBtns" href="#" role="button">Edit Goals</a>
             </div>
             <div class="col-md-2 ">
-              <a class="btn btn-primary btn-lg blueberry dashboardBtns" href="#" role="button">Compare</a>
+              <a class="btn btn-primary btn-lg blueberry dashboardBtns" href="#" role="button" onclick="toggleCompare()">Compare</a>
             </div>
           </p>
         </div>
       </div>
+	  
+	  <div id = "compareTable" class="w3-container" style="position:absolute; right:235px; display: none;">
+		<table class="w3-table-all w3-card-4">
+			<tr>
+				<th> </th>
+				<th> This Session </th>
+				<th> Last Session </th>
+			</tr>
+			<tr>
+				<th> Reps </th>
+				<th> 8 </th>
+				<th> 5 </th>
+			</tr>
+			<tr>
+				<th> Max EMG </th>
+				<th> 800 </th>
+				<th> 500 </th>
+			</tr>
+		</table>
+	</div>
+				
+	  
       
       <div class="container">
         <h1>Muscle Activity</h1>
