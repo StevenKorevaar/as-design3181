@@ -2,7 +2,7 @@
 
 OLED::OLED()
 {
-	
+  
 }
 
 //============================================================================
@@ -105,20 +105,20 @@ void OLED::fill_OLED(uint8_t R, uint8_t G, uint8_t B)
 //============================================================================
 void OLED::begin(void)
 {
-	pinMode(OLED_CS,OUTPUT);
-	pinMode(OLED_RESET,OUTPUT);
-	pinMode(OLED_CD,OUTPUT);
+  pinMode(OLED_CS,OUTPUT);
+  pinMode(OLED_RESET,OUTPUT);
+  pinMode(OLED_CD,OUTPUT);
 
-	//Drive the ports to a reasonable starting state.
-	CLR_RESET;
-	CLR_RS;
-	SET_CS;
-	
-	// Initialize SPI. By default the clock is 4MHz.
-	SPI.begin();
-	//Bump the clock to 8MHz. Appears to be the maximum.
-	SPI.beginTransaction(SPISettings(8000000, MSBFIRST, SPI_MODE0));
-		
+  //Drive the ports to a reasonable starting state.
+  CLR_RESET;
+  CLR_RS;
+  SET_CS;
+  
+  // Initialize SPI. By default the clock is 4MHz.
+  SPI.begin();
+  //Bump the clock to 8MHz. Appears to be the maximum.
+  SPI.beginTransaction(SPISettings(8000000, MSBFIRST, SPI_MODE0));
+    
   //Reset the OLED controller by hardware
   CLR_RESET;
   delay(1);
@@ -635,6 +635,55 @@ void OLED::fillRect(int16_t x, int16_t y, int16_t w, int16_t h, uint8_t r, uint8
 }
 //============================================================================
 void OLED::drawChar(unsigned char c, int16_t x, int16_t y, uint8_t r, uint8_t g, uint8_t b,
+    uint8_t size,uint8_t br, uint8_t bg, uint8_t bb) 
+{
+  if((x >= _width)            || // Clip right
+     (y >= _height)           || // Clip bottom
+     ((x + 6 * size - 1) < 0) || // Clip left
+     ((y + 8 * size - 1) < 0))   // Clip top
+      return;
+
+  for(int8_t i = 0; i < 6; i++) // Char bitmap = 5 columns
+  {
+    uint8_t line;
+    if(i < 5) 
+    {
+      line = pgm_read_byte(font+(c*5)+i);
+    }
+    else
+    {
+      line = 0x0;
+    }
+    
+    for(int8_t j = 0; j < 8; j++, line >>= 1) 
+    {
+      if(line & 0x1)
+      {
+        if(size == 1)
+        {
+          drawPixel(x+i, y+j, r, g, b);
+        }
+        else
+        {
+          fillRect(x+(i*size), y+(j*size), size, size, r, g, b);
+        }
+      }
+      else
+      {
+        if(size == 1)
+        {
+          drawPixel(x+i, y+j, br, bg, bb);
+        }
+        else
+        {
+          fillRect(x+(i*size), y+(j*size), size, size, br, bg, bb);
+        }
+      }
+    }
+  }
+}
+
+void OLED::drawChar(unsigned char c, int16_t x, int16_t y, uint8_t r, uint8_t g, uint8_t b,
     uint8_t size) 
 {
   if((x >= _width)            || // Clip right
@@ -672,17 +721,29 @@ void OLED::drawChar(unsigned char c, int16_t x, int16_t y, uint8_t r, uint8_t g,
       {
         if(size == 1)
         {
-          drawPixel(x+i, y+j, 0, 0, 0);
+          drawPixel(x+i, y+j, 0,0,0);
         }
         else
         {
-          fillRect(x+(i*size), y+(j*size), size, size, 0, 0, 0);
+          fillRect(x+(i*size), y+(j*size), size, size, 0,0,0);
         }
       }
     }
   }
 }
 //============================================================================
+void OLED::drawString(String str, int16_t x, int16_t y, uint8_t r, uint8_t g, uint8_t b,
+    uint8_t size, uint8_t br, uint8_t bg, uint8_t bb)
+{
+  for(uint8_t i = 0; i < str.length(); i++)
+  {
+    drawChar(str[i], x, y, r, g, b, size, br,bg,bb);
+    x+=(size*6);
+  }
+}
+
+
+
 void OLED::drawString(String str, int16_t x, int16_t y, uint8_t r, uint8_t g, uint8_t b,
     uint8_t size)
 {
@@ -700,10 +761,11 @@ void OLED::drawImage(const uint8_t* img, int16_t x, int16_t y, int16_t w, int16_
   {
     for(uint8_t i = 0; i < w; i++)
     {
-      drawPixel(x + i, y + h - j - 1, img[index + 2], img[index + 1], img[index]);
+      drawPixel(x + i, y + j, img[index + 2], img[index + 1], img[index]);
       index+=3;
     } 
   }
 }
+
 //============================================================================
 

@@ -1,7 +1,7 @@
 #ifndef JSON_GENERATOR
 #define JSON_GENERATOR
 
-#include "ArduinoJson.h"
+#include <ArduinoJson.h>
 #include "TelstraM1Device.h"
 #include <stdlib.h>
 
