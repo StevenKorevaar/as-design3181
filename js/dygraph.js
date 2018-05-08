@@ -15,7 +15,8 @@
 		  } else{
 			  results.entries.forEach(blob => {
           randID++;
-          var ele = "<tr><th>" +randID+"</th><td>"+blob.name+"</td><td>"+( Math.round(Math.random()*2 + 1) )+"</td><td style=\"text-align: center;\"><button onclick=\"refreshGraph2('"+blob.name+"')\" class=\"btn btn-warning\">Show</button></td></tr>";
+		  var blobName = blob.name.slice(13,23) + " - " + (parseInt(blob.name.slice(24,26))+10) + ":" + blob.name.slice(27,29);
+          var ele = "<tr><th>" +randID+"</th><td>"+blobName+"</td><td>"+( Math.round(Math.random()*2 + 1) )+"</td><td style=\"text-align: center;\"><button onclick=\"refreshGraph2('"+blob.name+"')\" class=\"btn btn-warning\">Show</button></td></tr>";
           
           $("#sessionsBody").prepend(ele);
           
