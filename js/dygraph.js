@@ -15,7 +15,13 @@
 		  } else{
 			  results.entries.forEach(blob => {
           randID++;
-		  var blobName = blob.name.slice(13,23) + " - " + (parseInt(blob.name.slice(24,26))+10) + ":" + blob.name.slice(27,29);
+		  console.log(blob.name.slice(24,26));
+		  if(parseInt(blob.name.slice(24,26))>=14){
+			var blobName = blob.name.slice(13,21) + (parseInt(blob.name.slice(21,23))+1) + " - " + (parseInt(blob.name.slice(24,26))-14) + ":" + blob.name.slice(27,29);
+		  }
+		  else{
+			var blobName = blob.name.slice(13,23) + " - " + (parseInt(blob.name.slice(24,26))+10) + ":" + blob.name.slice(27,29);
+		  }
           var ele = "<tr><th>" +randID+"</th><td>"+blobName+"</td><td>"+( Math.round(Math.random()*2 + 1) )+"</td><td style=\"text-align: center;\"><button onclick=\"refreshGraph2('"+blob.name+"')\" class=\"btn btn-warning\">Show</button></td></tr>";
           
           $("#sessionsBody").prepend(ele);
