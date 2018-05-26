@@ -116,7 +116,7 @@ function refreshGraph2(blobname) {
 				var graphData = [];
 				for(i=0;i < samples.length; i++){
 					if(i%25==0)
-					graphData.push([i, samples[i], smoothSamples[i], 500]);
+					graphData.push([i, samples[i], smoothSamples[i], 600]);
 					else
 					graphData.push([i, samples[i], smoothSamples[i], null]);
 				}
