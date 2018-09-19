@@ -28,6 +28,23 @@ void setup() {
   cp5 = new ControlP5(this);
   timer = new ControlTimer();
   isStart = false;
+  
+  cp5.addTab("result")
+     .setColorBackground(color(0,160,100))
+     .setColorLabel(color(255))
+     .setColorActive(color(255,128,0))
+     ;
+  
+  cp5.getTab("default")
+     .activateEvent(true)
+     .setLabel("Default Tab")
+     .setId(1)
+     ;
+  
+  cp5.getTab("result")
+     .activateEvent(true)
+     .setId(2)
+     ;
 
   heading = cp5.addTextlabel("label")
     .setText("Me-MG User Interface")
