@@ -1,8 +1,11 @@
 import controlP5.*; // import controlP5 library
+import processing.serial.*;
 ControlP5 cp5;
 ControlTimer timer;
 
 Accordion accordion;
+Serial myPort;
+JSONObject json;
 
 color c = color(0, 160, 100);
 float minimum = 0;
@@ -13,10 +16,14 @@ int count = 0;
 ArrayList<Float> data = new ArrayList<Float>();
 ArrayList<Float> smoothData = new ArrayList<Float>();
 
+ArrayList<Float> dataLoad = new ArrayList<Float>();
+ArrayList<Float> smoothDataLoad = new ArrayList<Float>();
 
 Textlabel heading;
 Textlabel timerLabel;
 Textlabel averageLabel;
+String[] fileNames;
+String selectedFile;
 boolean isStart;
 
 void setup() {
@@ -24,129 +31,30 @@ void setup() {
   frameRate(30);
   noStroke();
   smooth();
-  gui();
-  cp5 = new ControlP5(this);
+
+  String portName = Serial.list()[1];
+  myPort = new Serial(this, portName, 9600);
   timer = new ControlTimer();
+
+  File f = dataFile(dataPath(""));
+  fileNames = f.list(FILTER);
+
+  gui();
   isStart = false;
-  
-  cp5.addTab("result")
-     .setColorBackground(color(0,160,100))
-     .setColorLabel(color(255))
-     .setColorActive(color(255,128,0))
-     ;
-  
-  cp5.getTab("default")
-     .activateEvent(true)
-     .setLabel("Default Tab")
-     .setId(1)
-     ;
-  
-  cp5.getTab("result")
-     .activateEvent(true)
-     .setId(2)
-     ;
 
-  heading = cp5.addTextlabel("label")
-    .setText("Me-MG User Interface")
-    .setPosition(50, 50)
-    .setColorValue(#154360)
-    .setFont(createFont("Georgia", 20))
-    ;
-
-  timerLabel = cp5.addTextlabel("timer")
-    .setPosition(1150, 125)
-    .setColorValue(0)
-    .setValue(timer.toString())
-    .setFont(createFont("Georgia", 12))
-    ;
   timer.setSpeedOfTime(1);
-}
-
-void gui() {
-
-  cp5 = new ControlP5(this);
-
-  heading = cp5.addTextlabel("label")
-    .setText("Me-MG User Interface")
-    .setPosition(50, 50)
-    .setColorValue(#154360)
-    .setFont(createFont("Georgia", 20))
-    ;
-  Group g1 = cp5.addGroup("Control")
-    .setBackgroundColor(color(0, 64))
-    .setBackgroundHeight(150)
-    ;
-
-  cp5.addBang("Start")
-    .setPosition(40, 40)
-    .setSize(60, 60)
-    .moveTo(g1)
-    //.plugTo(this,"shuffle");
-    ;
-  cp5.addBang("Reset")
-    .setPosition(140, 40)
-    .setSize(60, 60)
-    .setColorForeground(#c0392b)
-    .setColorActive(#f1948a)
-    .moveTo(g1)
-    //.plugTo(this,"shuffle");
-    ;
-
-  // Group 2
-  Group g2 = cp5.addGroup("Threshold")
-    .setBackgroundColor(color(0, 64))
-    .setBackgroundHeight(150)
-    ;
-
-  cp5.addSlider("Minimum")
-    .setPosition(40, 40)
-    .setSize(10, 80)
-    .setValue(150)
-    .setRange(0, 500)
-    .setSliderMode(Slider.FLEXIBLE)
-    .moveTo(g2)
-    ;
-  cp5.addSlider("Maximum")
-    .setPosition(140, 40)
-    .setSize(10, 80)
-    .setValue(300)
-    .setRange(0, 500)
-    .setSliderMode(Slider.FLEXIBLE)
-    .moveTo(g2)
-    ;
-
-  // Group 3
-  Group g3 = cp5.addGroup("Information")
-    .setBackgroundColor(color(0, 64))
-    .setBackgroundHeight(150)
-    ;
-  averageLabel = cp5.addTextlabel("average")
-    .setText("Average : "+averageValue)
-    .setPosition(40, 40)
-    .setColorValue(255)
-    .setFont(createFont("Georgia", 12))
-    .moveTo(g3)
-    ;
-
-  // Accordion
-  accordion = cp5.addAccordion("acc")
-    .setPosition(50, 100)
-    .setWidth(250)
-    .addItem(g1)
-    .addItem(g2)
-    .addItem(g3)
-    .moveTo("default")
-    ;
-  accordion.open(0, 1, 2);
-
-  accordion.setCollapseMode(Accordion.MULTI);
 }
 
 void draw() {
   background(#aed6f1);
-  if (isStart)
-    randomGenerator();
-  drawGraph();
+  if (isStart) {
+    readFromArduino();
+    //randomGenerator();
+  }
+  if (cp5.getTab("default").isActive())
+    drawGraph();
+  if (cp5.getTab("result").isActive())
+    drawGraph_result();
   if (isStart) {
     timerLabel.setValue(timer.toString());
     if (count >= 30) {
@@ -189,69 +97,41 @@ void controlEvent(ControlEvent theEvent) {
     if (theEvent.getController().getName()=="average") {
       theEvent.getController().setValue(averageValue);
     }
+    
+    if(theEvent.getController().getName()=="list_d1"){
+      selectedFile = fileNames[(int)theEvent.getController().getValue()];
+      loadData(selectedFile);
+    }
   }
 }
 
-void drawGraph() {
-  pushMatrix();
-  translate(400, 650);
-  stroke(0);
-  // Background
-  strokeWeight(0);
-  rect(-50, -550, 900, 600);
-
-  //Axis
-  strokeWeight(3);
-  line(0, 0, 800, 0);
-  line(0, -500, 0, 0);
-  fill(0);
-  triangle(0, -500, -10, -480, 10, -480);
-  triangle(800, 0, 780, 10, 780, -10);
-  fill(255);
-
-  //Plot
-  //Raw Data
-  strokeWeight(1);
-  for (int i = 0; i <= data.size()-1; i++) {
-    if (i == 0) {
-      point(i, -data.get(i));
-    } else {
-      stroke(34, 122, 202);
-      line(i-1, -data.get(i-1), i, -data.get(i));
+void readFromArduino() {
+  if ( myPort.available() >0)
+  {
+    String val = myPort.readStringUntil( '\n' );
+    if ( val != null)
+    {
+      try {
+        json = JSONObject.parse(val);
+        JSONArray i = (JSONArray)json.get("EMG");
+        String j = i.getString(0);
+        float EMGValue = float(j)*250; 
+        data.add(0, EMGValue);
+        if (smoothData.isEmpty()) {
+          smoothData.add(0, EMGValue);
+          averageTotal += EMGValue;
+        } else {
+          float newSmoothData = 0.9*smoothData.get(0)+0.1*data.get(0);
+          smoothData.add(0, newSmoothData);
+          averageTotal += newSmoothData;
+        }
+        averageValue = averageTotal / smoothData.size();
+      }
+      catch (Exception e) {
+        e.printStackTrace();
+      }
     }
   }
-
-  //Smooth Data
-  for (int i = 0; i <= smoothData.size()-1; i++) {
-    if (i == 0) {
-      point(i, -smoothData.get(i));
-    } else {
-      stroke(245, 136, 6);
-      line(i-1, -smoothData.get(i-1), i, -smoothData.get(i));
-    }
-  }
-
-  //Threshold
-  //Minimum
-  stroke(255, 0, 0);
-  strokeWeight(3);
-  for (int i = 0; i <= 100; i++) {
-    float x = lerp(0, 800, i/100.0);
-    point(x, -minimum);
-  }
-  //Maximum
-  stroke(0, 255, 0);
-  for (int i = 0; i <= 100; i++) {
-    float x = lerp(0, 800, i/100.0);
-    point(x, -maximum);
-  }
-
-  if (data.size()>=800) {
-    data.remove(799);
-    averageTotal -= smoothData.get(799);
-    smoothData.remove(799);
-  }
-  popMatrix();
 }
 
 void randomGenerator() {
@@ -261,26 +141,9 @@ void randomGenerator() {
     smoothData.add(0, r);
     averageTotal += r;
   } else {
-    float newSmoothData = 0.9*smoothData.get(0)+0.1*data.get(0);
+    float newSmoothData = 0.98*smoothData.get(0)+0.1*data.get(0);
     smoothData.add(0, newSmoothData);
     averageTotal += newSmoothData;
   }
   averageValue = averageTotal / smoothData.size();
-}
-
-void saveData(){
-  Table table = new Table();
-  
-  table.addColumn("no");
-  table.addColumn("raw");
-  table.addColumn("smooth");
-  
-  for(int i = 0; i <= data.size()-1; i++){
-    TableRow newRow = table.addRow();
-    newRow.setInt("no", table.getRowCount()-1);
-    newRow.setFloat("raw",data.get(i));
-    newRow.setFloat("smooth",smoothData.get(i));
-  }
-  
-  saveTable(table, "data/new.csv");
 }

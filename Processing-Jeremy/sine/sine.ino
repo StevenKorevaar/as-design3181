@@ -5,7 +5,7 @@ int i = 0;
 
 String makeJsonData(String send_data){ 
   String content = "";
-  DynamicJsonBuffer  jsonBuffer;
+  DynamicJsonBuffer jsonBuffer;
   JsonObject& jsonOb = jsonBuffer.createObject();      // Create the root of the object tree.
 
   JsonArray& jsonAr = jsonOb.createNestedArray("EMG"); // Create field for EMG data
@@ -26,10 +26,6 @@ void loop() {
 //Serial.println(sin(0.1*i));
 
 Serial.println(makeJsonData((String(sin(0.1*i), 2))));
-delay(100);
 i++;
 
 }
-
-
-
