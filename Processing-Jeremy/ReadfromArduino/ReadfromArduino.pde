@@ -21,8 +21,9 @@ void draw()
       try {
         json = JSONObject.parse(val);
         JSONArray i = (JSONArray)json.get("EMG");
-        int j = int(i.getString(0)); 
-        println(j);
+        String j = i.getString(0);
+        float k = float(j); 
+        println(k);
       }
       catch (Exception e) {
         e.printStackTrace();

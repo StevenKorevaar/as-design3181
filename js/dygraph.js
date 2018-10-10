@@ -1,15 +1,15 @@
  $(document).ready(function () {
       
-	  // Setting up connection to Azure Blod Storage
+	  // Setting up connection to Azure Blob Storage
 	  const account = {
-		name: "laikamemgstorage",
-		sas: "sv=2017-04-17&ss=bfqt&srt=sco&sp=rwdl&st=2018-04-21T05%3A21%3A21Z&se=2019-04-22T05%3A21%3A00Z&sig=lXzkeEHwkI1KF5TKHvAeSD3x7XABYERYs7%2Fj8VIRxEE%3D"
+		name: "memgstorage",
+		sas: "?sv=2017-11-09&ss=bfqt&srt=sco&sp=rwdlacup&se=2019-10-10T11:45:52Z&st=2018-10-10T03:45:52Z&spr=https,http&sig=z462gNN6P5Ty7Rby8o%2Bfr6LRoV1USIHC2Y%2FT%2FnJ7NyI%3D"
 		};
 	  const blobUri = 'https://' + account.name + '.blob.core.windows.net';
 	  const blobService = AzureStorage.Blob.createBlobServiceWithSas(blobUri, account.sas);
 	  var randID = 0;
 	  // Reading the names of the blobs into the list
-	  blobService.listBlobsSegmented("laika-memg-container", null, (error, results) => {
+	  blobService.listBlobsSegmented("memgcontainer", null, (error, results) => {
 		  if(error){
 			  
 		  } else{
@@ -66,14 +66,14 @@ function refreshGraph2(blobname) {
 
 	  // Setting up connection to Azure Blob Storage
 	  const account = {
-		name: "laikamemgstorage",
-		sas: "sv=2017-04-17&ss=bfqt&srt=sco&sp=rwdl&st=2018-04-21T05%3A21%3A21Z&se=2019-04-22T05%3A21%3A00Z&sig=lXzkeEHwkI1KF5TKHvAeSD3x7XABYERYs7%2Fj8VIRxEE%3D"
+		name: "memgstorage",
+		sas: "?sv=2017-11-09&ss=bfqt&srt=sco&sp=rwdlacup&se=2019-10-10T11:45:52Z&st=2018-10-10T03:45:52Z&spr=https,http&sig=z462gNN6P5Ty7Rby8o%2Bfr6LRoV1USIHC2Y%2FT%2FnJ7NyI%3D"
 		};
 	  const blobUri = 'https://' + account.name + '.blob.core.windows.net';
 	  const blobService = AzureStorage.Blob.createBlobServiceWithSas(blobUri, account.sas);
 	
 	  // Reading Data from the Blob
-	  blobService.getBlobToText("laika-memg-container", blobname, (error, results) =>{
+	  blobService.getBlobToText("memgcontainer", blobname, (error, results) =>{
 			if(error){
 			  
 			}

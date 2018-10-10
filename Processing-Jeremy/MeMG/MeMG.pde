@@ -32,7 +32,7 @@ void setup() {
   noStroke();
   smooth();
 
-  String portName = Serial.list()[1];
+  String portName = Serial.list()[0];
   myPort = new Serial(this, portName, 9600);
   timer = new ControlTimer();
 
