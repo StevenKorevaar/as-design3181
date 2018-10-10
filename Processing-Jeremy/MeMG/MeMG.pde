@@ -3,7 +3,8 @@ import processing.serial.*;
 ControlP5 cp5;
 ControlTimer timer;
 
-Accordion accordion;
+Accordion accordionDefault;
+Accordion accordionResult;
 Serial myPort;
 JSONObject json;
 
@@ -12,6 +13,7 @@ float minimum = 0;
 float maximum = 0;
 float averageValue = 0;
 float averageTotal = 0;
+int repCount = 0;
 int count = 0;
 ArrayList<Float> data = new ArrayList<Float>();
 ArrayList<Float> smoothData = new ArrayList<Float>();
@@ -19,12 +21,27 @@ ArrayList<Float> smoothData = new ArrayList<Float>();
 ArrayList<Float> dataLoad = new ArrayList<Float>();
 ArrayList<Float> smoothDataLoad = new ArrayList<Float>();
 
+// Variables for result tab
+float duration = 0;
+float average = 0;
+DropdownList drop_l1; 
+
+// Variables for debugging
+float index = 0;
+
+// Variables for real-time analytics
+boolean lowerThreshold = false;
+boolean upperThreshold = false;
+boolean inRep = false;
+
 Textlabel heading;
 Textlabel timerLabel;
 Textlabel averageLabel;
+Textlabel resultInformation;
 String[] fileNames;
 String selectedFile;
 boolean isStart;
+File f;
 
 void setup() {
   size(1366, 768);
@@ -36,7 +53,7 @@ void setup() {
   myPort = new Serial(this, portName, 9600);
   timer = new ControlTimer();
 
-  File f = dataFile(dataPath(""));
+  f = dataFile(dataPath(""));
   fileNames = f.list(FILTER);
 
   gui();
@@ -48,17 +65,21 @@ void setup() {
 void draw() {
   background(#aed6f1);
   if (isStart) {
-    readFromArduino();
+    generateSin();
+    //readFromArduino();
     //randomGenerator();
+    analyzeNumberOfReps();
   }
   if (cp5.getTab("default").isActive())
     drawGraph();
+    drawFeedback();
   if (cp5.getTab("result").isActive())
     drawGraph_result();
   if (isStart) {
     timerLabel.setValue(timer.toString());
     if (count >= 30) {
-      averageLabel.setText("Average : "+averageValue);
+      averageLabel.setText("Average : "+averageValue+
+                           "\nNumber of Reps: "+repCount);
       count = 0;
     }
   }
@@ -71,6 +92,7 @@ void controlEvent(ControlEvent theEvent) {
       if (!isStart) {
         isStart = true;
         timer.reset();
+        index = 0;
       }
     }
 
@@ -82,8 +104,18 @@ void controlEvent(ControlEvent theEvent) {
       data.clear();
       smoothData.clear();
       averageValue = 0;
+      repCount = 0;
+      lowerThreshold = false;
+      upperThreshold = false;
+      inRep = false;
       count = 0;
-      averageLabel.setText("Average : "+averageValue);
+      averageLabel.setText("Average : "+averageValue+
+                           "\nNumber of Reps: "+repCount);
+      fileNames = f.list(FILTER);
+      drop_l1.clear();
+      for (int i = 0; i < fileNames.length; i++) {
+        drop_l1.addItem(fileNames[i], i);
+      }
     }
 
     if (theEvent.getController().getName()=="Minimum") {
@@ -97,10 +129,12 @@ void controlEvent(ControlEvent theEvent) {
     if (theEvent.getController().getName()=="average") {
       theEvent.getController().setValue(averageValue);
     }
-    
-    if(theEvent.getController().getName()=="list_d1"){
+
+    if (theEvent.getController().getName()=="list_d1") {
       selectedFile = fileNames[(int)theEvent.getController().getValue()];
       loadData(selectedFile);
+      resultInformation.setText("Duration    : "+ duration + " s" +
+        "\nAverage      : "+ average);
     }
   }
 }
@@ -121,7 +155,7 @@ void readFromArduino() {
           smoothData.add(0, EMGValue);
           averageTotal += EMGValue;
         } else {
-          float newSmoothData = 0.9*smoothData.get(0)+0.1*data.get(0);
+          float newSmoothData = 0.98*smoothData.get(0)+0.1*data.get(0);
           smoothData.add(0, newSmoothData);
           averageTotal += newSmoothData;
         }
@@ -146,4 +180,19 @@ void randomGenerator() {
     averageTotal += newSmoothData;
   }
   averageValue = averageTotal / smoothData.size();
+}
+
+void generateSin() {
+  float r = 200*sin(0.05*index+200)+200;
+  data.add(0, r);
+  if (smoothData.isEmpty()) {
+    smoothData.add(0, r);
+    averageTotal += r;
+  } else {
+    float newSmoothData = 0.9*smoothData.get(0)+0.1*data.get(0);
+    smoothData.add(0, newSmoothData);
+    averageTotal += newSmoothData;
+  }
+  averageValue = averageTotal / smoothData.size();
+  index++;
 }
