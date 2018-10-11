@@ -42,39 +42,41 @@ void loadData(String fileName) {
 }
 
 void analyzeNumberOfReps() {
-  float currentData = data.get(0);
+  if (!data.isEmpty()) {
+    float currentData = data.get(0);
 
-  if (!inRep) {
+    if (!inRep) {
 
-    if (!lowerThreshold && !upperThreshold) {
-      if (currentData > minimum) {
-        lowerThreshold = true;
+      if (!lowerThreshold && !upperThreshold) {
+        if (currentData > minimum) {
+          lowerThreshold = true;
+        }
+      }
+
+      if (lowerThreshold & !upperThreshold) {
+        if (currentData < minimum) {
+          lowerThreshold = false;
+        }
+        if (currentData > maximum) {
+          upperThreshold = true;
+          inRep = true;
+        }
       }
     }
 
-    if (lowerThreshold & !upperThreshold) {
-      if (currentData < minimum) {
-        lowerThreshold = false;
-      }
-      if (currentData > maximum) {
-        upperThreshold = true;
-        inRep = true;
-      }
-    }
-  }
+    if (inRep) {
 
-  if (inRep) {
-
-    if (lowerThreshold & upperThreshold) {
-      if (currentData < maximum) {
-        upperThreshold = false;
+      if (lowerThreshold & upperThreshold) {
+        if (currentData < maximum) {
+          upperThreshold = false;
+        }
       }
-    }
-    if (lowerThreshold & !upperThreshold) {
-      if (currentData < minimum) {
-        lowerThreshold = false;
-        inRep = false;
-        repCount++;
+      if (lowerThreshold & !upperThreshold) {
+        if (currentData < minimum) {
+          lowerThreshold = false;
+          inRep = false;
+          repCount++;
+        }
       }
     }
   }

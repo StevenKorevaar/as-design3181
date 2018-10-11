@@ -45,12 +45,12 @@ File f;
 
 void setup() {
   size(1366, 768);
-  frameRate(30);
+  frameRate(120);
   noStroke();
   smooth();
 
   String portName = Serial.list()[0];
-  myPort = new Serial(this, portName, 9600);
+  myPort = new Serial(this, portName, 115200);
   timer = new ControlTimer();
 
   f = dataFile(dataPath(""));
@@ -65,21 +65,20 @@ void setup() {
 void draw() {
   background(#aed6f1);
   if (isStart) {
-    generateSin();
-    //readFromArduino();
+    //generateSin();
     //randomGenerator();
     analyzeNumberOfReps();
   }
   if (cp5.getTab("default").isActive())
     drawGraph();
-    drawFeedback();
+  drawFeedback();
   if (cp5.getTab("result").isActive())
     drawGraph_result();
   if (isStart) {
     timerLabel.setValue(timer.toString());
     if (count >= 30) {
       averageLabel.setText("Average : "+averageValue+
-                           "\nNumber of Reps: "+repCount);
+        "\nNumber of Reps: "+repCount);
       count = 0;
     }
   }
@@ -93,6 +92,8 @@ void controlEvent(ControlEvent theEvent) {
         isStart = true;
         timer.reset();
         index = 0;
+      data.clear();
+      smoothData.clear();
       }
     }
 
@@ -110,7 +111,7 @@ void controlEvent(ControlEvent theEvent) {
       inRep = false;
       count = 0;
       averageLabel.setText("Average : "+averageValue+
-                           "\nNumber of Reps: "+repCount);
+        "\nNumber of Reps: "+repCount);
       fileNames = f.list(FILTER);
       drop_l1.clear();
       for (int i = 0; i < fileNames.length; i++) {
@@ -139,30 +140,34 @@ void controlEvent(ControlEvent theEvent) {
   }
 }
 
-void readFromArduino() {
-  if ( myPort.available() >0)
-  {
-    String val = myPort.readStringUntil( '\n' );
-    if ( val != null)
+void serialEvent(Serial p) {
+  if (isStart) {
+    if ( p.available() >0)
     {
-      try {
-        json = JSONObject.parse(val);
-        JSONArray i = (JSONArray)json.get("EMG");
-        String j = i.getString(0);
-        float EMGValue = float(j)*250; 
-        data.add(0, EMGValue);
-        if (smoothData.isEmpty()) {
-          smoothData.add(0, EMGValue);
-          averageTotal += EMGValue;
-        } else {
-          float newSmoothData = 0.98*smoothData.get(0)+0.1*data.get(0);
-          smoothData.add(0, newSmoothData);
-          averageTotal += newSmoothData;
+      String val = p.readStringUntil( '\n' );
+      if ( val != null)
+      {
+        try {
+          json = JSONObject.parse(val);
+          JSONArray i = (JSONArray)json.get("DATA");
+          print(i+"\n");
+          String j = i.getString(1);
+          print(j+"\n");
+          float EMGValue = float(j); 
+          data.add(0, EMGValue);
+          if (smoothData.isEmpty()) {
+            smoothData.add(0, EMGValue);
+            averageTotal += EMGValue;
+          } else {
+            float newSmoothData = 0.9*smoothData.get(0)+0.1*data.get(0);
+            smoothData.add(0, newSmoothData);
+            averageTotal += newSmoothData;
+          }
+          averageValue = averageTotal / smoothData.size();
         }
-        averageValue = averageTotal / smoothData.size();
-      }
-      catch (Exception e) {
-        e.printStackTrace();
+        catch (Exception e) {
+          e.printStackTrace();
+        }
       }
     }
   }

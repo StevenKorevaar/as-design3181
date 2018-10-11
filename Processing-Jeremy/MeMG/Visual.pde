@@ -86,27 +86,27 @@ void gui() {
     ;
   averageLabel = cp5.addTextlabel("average")
     .setText("Average : "+averageValue+
-             "\nNumber of Reps: "+repCount)
+    "\nNumber of Reps: "+repCount)
     .setPosition(40, 40)
     .setColorValue(255)
     .setFont(createFont("Georgia", 12))
     .moveTo(g3)
     ;
-    
+
   // Group 4
   Group g4 = cp5.addGroup("Result Information")
     .setBackgroundColor(color(0, 64))
     .setBackgroundHeight(150)
     ;
- resultInformation = cp5.addTextlabel("result")
-   .setText("Duration    : "+ duration + " s" +
-            "\nAverage      : "+ average)
-   .setPosition(20,20)
-   .setColorValue(255)
-   .setFont(createFont("Georgia",12))
-   .moveTo(g4)
-   ;
-    
+  resultInformation = cp5.addTextlabel("result")
+    .setText("Duration    : "+ duration + " s" +
+    "\nAverage      : "+ average)
+    .setPosition(20, 20)
+    .setColorValue(255)
+    .setFont(createFont("Georgia", 12))
+    .moveTo(g4)
+    ;
+
   // Accordion
   accordionDefault = cp5.addAccordion("acc")
     .setPosition(50, 100)
@@ -119,17 +119,17 @@ void gui() {
   accordionDefault.open(0, 1, 2);
 
   accordionDefault.setCollapseMode(Accordion.MULTI);
-  
+
   accordionResult = cp5.addAccordion("accResult")
     .setPosition(50, 300)
     .setWidth(250)
     .addItem(g4)
     .moveTo("result")
     ;
- accordionResult.open(0);
+  accordionResult.open(0);
 
   // Second tab
-    drop_l1 = cp5.addDropdownList("list_d1")
+  drop_l1 = cp5.addDropdownList("list_d1")
     .setPosition(50, 100)
     .setBackgroundColor(color(190))
     .setItemHeight(20)
@@ -146,24 +146,23 @@ void gui() {
 
 void drawFeedback() {
   pushMatrix();
-  translate(120,650);
-  stroke(0,0,0);
-  if(!isStart)
-    fill(32,32,32);
+  translate(120, 650);
+  stroke(0, 0, 0);
+  if (!isStart)
+    fill(32, 32, 32);
   else
-    fill(51,255,51);
-  ellipse(0,0,50,50);
+    fill(51, 255, 51);
+  ellipse(0, 0, 50, 50);
   fill(0, 102, 153);
-  text("Status",-20,50);
-  if(!inRep)
-    fill(255,51,51);
+  text("Status", -20, 50);
+  if (!inRep)
+    fill(255, 51, 51);
   else
-    fill(102,255,102);
-  ellipse(100,0,50,50);
+    fill(102, 255, 102);
+  ellipse(100, 0, 50, 50);
   fill(0, 102, 153);
-  text("In Rep",80, 50);
+  text("In Rep", 80, 50);
   popMatrix();
-  
 }
 
 void drawGraph() {
@@ -186,43 +185,45 @@ void drawGraph() {
 
   //Plot
   //Raw Data
-  strokeWeight(1);
-  if (data.size() <= 800) {
-    for (int i = 0; i <= data.size()-1; i++) {
-      if (i == 0) {
-        point(i, -data.get(i)-250);
-      } else {
-        stroke(34, 122, 202);
-        line(i-1, -data.get(i-1), i, -data.get(i));
+  if (isStart) {
+    strokeWeight(1);
+    if (data.size() <= 800) {
+      for (int i = 0; i <= data.size()-1; i++) {
+        if (i == 0) {
+          point(i, -data.get(i)-250);
+        } else {
+          stroke(34, 122, 202);
+          line(i-1, -data.get(i-1), i, -data.get(i));
+        }
       }
-    }
 
-    //Smooth Data
-    for (int i = 0; i <= smoothData.size()-1; i++) {
-      if (i == 0) {
-        point(i, -smoothData.get(i)-250);
-      } else {
-        stroke(245, 136, 6);
-        line(i-1, -smoothData.get(i-1), i, -smoothData.get(i));
+      //Smooth Data
+      for (int i = 0; i <= smoothData.size()-1; i++) {
+        if (i == 0) {
+          point(i, -smoothData.get(i)-250);
+        } else {
+          stroke(245, 136, 6);
+          line(i-1, -smoothData.get(i-1), i, -smoothData.get(i));
+        }
       }
-    }
-  } else {
-    for (int i = 0; i <= 800; i++) {
-      if (i == 0) {
-        point(i, -data.get(i)-250);
-      } else {
-        stroke(34, 122, 202);
-        line(i-1, -data.get(i-1), i, -data.get(i));
+    } else {
+      for (int i = 0; i <= 800; i++) {
+        if (i == 0) {
+          point(i, -data.get(i)-250);
+        } else {
+          stroke(34, 122, 202);
+          line(i-1, -data.get(i-1), i, -data.get(i));
+        }
       }
-    }
 
-    //Smooth Data
-    for (int i = 0; i <= 800; i++) {
-      if (i == 0) {
-        point(i, -smoothData.get(i)-250);
-      } else {
-        stroke(245, 136, 6);
-        line(i-1, -smoothData.get(i-1), i, -smoothData.get(i));
+      //Smooth Data
+      for (int i = 0; i <= 800; i++) {
+        if (i == 0) {
+          point(i, -smoothData.get(i)-250);
+        } else {
+          stroke(245, 136, 6);
+          line(i-1, -smoothData.get(i-1), i, -smoothData.get(i));
+        }
       }
     }
   }
