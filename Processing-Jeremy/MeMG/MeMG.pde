@@ -15,8 +15,10 @@ float averageValue = 0;
 float averageTotal = 0;
 int repCount = 0;
 int count = 0;
+
 ArrayList<Float> data = new ArrayList<Float>();
 ArrayList<Float> smoothData = new ArrayList<Float>();
+float flex = 0;
 
 ArrayList<Float> dataLoad = new ArrayList<Float>();
 ArrayList<Float> smoothDataLoad = new ArrayList<Float>();
@@ -41,6 +43,8 @@ Textlabel resultInformation;
 String[] fileNames;
 String selectedFile;
 boolean isStart;
+boolean raw;
+boolean filter;
 File f;
 
 void setup() {
@@ -65,13 +69,15 @@ void setup() {
 void draw() {
   background(#aed6f1);
   if (isStart) {
-    //generateSin();
+    generateSin();
     //randomGenerator();
     analyzeNumberOfReps();
   }
-  if (cp5.getTab("default").isActive())
+  if (cp5.getTab("default").isActive()) {
     drawGraph();
-  drawFeedback();
+    drawFeedback();
+    cp5.getController("flex").setValue(flex);
+  }
   if (cp5.getTab("result").isActive())
     drawGraph_result();
   if (isStart) {
@@ -92,8 +98,8 @@ void controlEvent(ControlEvent theEvent) {
         isStart = true;
         timer.reset();
         index = 0;
-      data.clear();
-      smoothData.clear();
+        data.clear();
+        smoothData.clear();
       }
     }
 
@@ -119,11 +125,11 @@ void controlEvent(ControlEvent theEvent) {
       }
     }
 
-    if (theEvent.getController().getName()=="Minimum") {
+    if (theEvent.getController().getName()=="Min") {
       minimum = theEvent.getController().getValue();
     }
 
-    if (theEvent.getController().getName()=="Maximum") {
+    if (theEvent.getController().getName()=="Max") {
       maximum = theEvent.getController().getValue();
     }
 
@@ -140,38 +146,42 @@ void controlEvent(ControlEvent theEvent) {
   }
 }
 
+/*
 void serialEvent(Serial p) {
-  if (isStart) {
-    if ( p.available() >0)
-    {
-      String val = p.readStringUntil( '\n' );
-      if ( val != null)
-      {
-        try {
-          json = JSONObject.parse(val);
-          JSONArray i = (JSONArray)json.get("DATA");
-          print(i+"\n");
-          String j = i.getString(1);
-          print(j+"\n");
-          float EMGValue = float(j); 
-          data.add(0, EMGValue);
-          if (smoothData.isEmpty()) {
-            smoothData.add(0, EMGValue);
-            averageTotal += EMGValue;
-          } else {
-            float newSmoothData = 0.9*smoothData.get(0)+0.1*data.get(0);
-            smoothData.add(0, newSmoothData);
-            averageTotal += newSmoothData;
-          }
-          averageValue = averageTotal / smoothData.size();
-        }
-        catch (Exception e) {
-          e.printStackTrace();
-        }
-      }
-    }
-  }
-}
+ if (isStart) {
+ if ( p.available() >0)
+ {
+ String val = p.readStringUntil( '\n' );
+ if ( val != null)
+ {
+ try {
+ json = JSONObject.parse(val);
+ JSONArray i = (JSONArray)json.get("DATA");
+ print(i+"\n");
+ String j = i.getString(0);
+ String k = i.getString(1);
+ print(j+"\n");
+ float EMGValue = float(j);
+ flex = float(k);
+ data.add(0, EMGValue);
+ if (smoothData.isEmpty()) {
+ smoothData.add(0, EMGValue);
+ averageTotal += EMGValue;
+ } else {
+ float newSmoothData = 0.9*smoothData.get(0)+0.1*data.get(0);
+ smoothData.add(0, newSmoothData);
+ averageTotal += newSmoothData;
+ }
+ averageValue = averageTotal / smoothData.size();
+ }
+ catch (Exception e) {
+ e.printStackTrace();
+ }
+ }
+ }
+ }
+ }
+ */
 
 void randomGenerator() {
   float r = random(0, 500);
@@ -189,6 +199,7 @@ void randomGenerator() {
 
 void generateSin() {
   float r = 200*sin(0.05*index+200)+200;
+  flex = r;
   data.add(0, r);
   if (smoothData.isEmpty()) {
     smoothData.add(0, r);

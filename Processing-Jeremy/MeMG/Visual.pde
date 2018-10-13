@@ -2,6 +2,10 @@ void gui() {
 
   cp5 = new ControlP5(this);
 
+  PFont pfont = createFont("Georgia", 20, true);
+  ControlFont font = new ControlFont(pfont,12);
+  ControlFont font2 = new ControlFont(pfont,12);
+  
 
   cp5.addTab("result")
     .setColorBackground(color(0, 160, 100))
@@ -25,8 +29,18 @@ void gui() {
     .setPosition(1150, 125)
     .setColorValue(0)
     .setValue(timer.toString())
-    .setFont(createFont("Georgia", 12))
+    .setFont(createFont("Georgia", 14))
     ;
+    
+  // Flex Slider
+  cp5.addSlider("flex")
+     .setPosition(1300,100)
+     .setSize(20,600)
+     .setRange(0,500)
+     .setColorCaptionLabel(255)
+     .setColorValueLabel(255)
+     .setFont(font2)
+     ;
 
   // Title
   heading = cp5.addTextlabel("title")
@@ -45,6 +59,7 @@ void gui() {
     .setPosition(40, 40)
     .setSize(60, 60)
     .moveTo(g1)
+    .setFont(font2)
     //.plugTo(this,"shuffle");
     ;
   cp5.addBang("Reset")
@@ -52,6 +67,7 @@ void gui() {
     .setSize(60, 60)
     .setColorForeground(#c0392b)
     .setColorActive(#f1948a)
+    .setFont(font2)
     .moveTo(g1)
     //.plugTo(this,"shuffle");
     ;
@@ -62,20 +78,35 @@ void gui() {
     .setBackgroundHeight(150)
     ;
 
-  cp5.addSlider("Minimum")
-    .setPosition(40, 40)
+  cp5.addSlider("Min")
+    .setPosition(20, 30)
     .setSize(10, 80)
     .setValue(150)
     .setRange(0, 500)
     .setSliderMode(Slider.FLEXIBLE)
     .moveTo(g2)
     ;
-  cp5.addSlider("Maximum")
-    .setPosition(140, 40)
+  cp5.addSlider("Max")
+    .setPosition(80, 30)
     .setSize(10, 80)
     .setValue(300)
     .setRange(0, 500)
     .setSliderMode(Slider.FLEXIBLE)
+    .moveTo(g2)
+    ;
+  cp5.addToggle("raw")
+    .setPosition(150, 30)
+    .setSize(50, 20)
+    .setValue(true)
+    .setMode(ControlP5.SWITCH)
+    .moveTo(g2)
+    ;
+
+  cp5.addToggle("filter")
+    .setPosition(150, 90)
+    .setSize(50, 20)
+    .setValue(true)
+    .setMode(ControlP5.SWITCH)
     .moveTo(g2)
     ;
 
@@ -89,7 +120,7 @@ void gui() {
     "\nNumber of Reps: "+repCount)
     .setPosition(40, 40)
     .setColorValue(255)
-    .setFont(createFont("Georgia", 12))
+    .setFont(createFont("Georgia", 14))
     .moveTo(g3)
     ;
 
@@ -103,7 +134,7 @@ void gui() {
     "\nAverage      : "+ average)
     .setPosition(20, 20)
     .setColorValue(255)
-    .setFont(createFont("Georgia", 12))
+    .setFont(createFont("Georgia", 14))
     .moveTo(g4)
     ;
 
@@ -133,8 +164,9 @@ void gui() {
     .setPosition(50, 100)
     .setBackgroundColor(color(190))
     .setItemHeight(20)
-    .setBarHeight(15)
+    .setBarHeight(30)
     .setWidth(200)
+    .setFont(font)
     .setLabel("CSV files")               
     .moveTo("result")
     ;
@@ -188,41 +220,49 @@ void drawGraph() {
   if (isStart) {
     strokeWeight(1);
     if (data.size() <= 800) {
-      for (int i = 0; i <= data.size()-1; i++) {
-        if (i == 0) {
-          point(i, -data.get(i)-250);
-        } else {
-          stroke(34, 122, 202);
-          line(i-1, -data.get(i-1), i, -data.get(i));
+      if (raw) {
+        for (int i = 0; i <= data.size()-1; i++) {
+          if (i == 0) {
+            point(i, -data.get(i)-250);
+          } else {
+            stroke(34, 122, 202);
+            line(i-1, -data.get(i-1), i, -data.get(i));
+          }
         }
       }
 
       //Smooth Data
-      for (int i = 0; i <= smoothData.size()-1; i++) {
-        if (i == 0) {
-          point(i, -smoothData.get(i)-250);
-        } else {
-          stroke(245, 136, 6);
-          line(i-1, -smoothData.get(i-1), i, -smoothData.get(i));
+      if (filter) {
+        for (int i = 0; i <= smoothData.size()-1; i++) {
+          if (i == 0) {
+            point(i, -smoothData.get(i)-250);
+          } else {
+            stroke(245, 136, 6);
+            line(i-1, -smoothData.get(i-1), i, -smoothData.get(i));
+          }
         }
       }
     } else {
-      for (int i = 0; i <= 800; i++) {
-        if (i == 0) {
-          point(i, -data.get(i)-250);
-        } else {
-          stroke(34, 122, 202);
-          line(i-1, -data.get(i-1), i, -data.get(i));
+      if (raw) {
+        for (int i = 0; i <= 800; i++) {
+          if (i == 0) {
+            point(i, -data.get(i)-250);
+          } else {
+            stroke(34, 122, 202);
+            line(i-1, -data.get(i-1), i, -data.get(i));
+          }
         }
       }
 
       //Smooth Data
-      for (int i = 0; i <= 800; i++) {
-        if (i == 0) {
-          point(i, -smoothData.get(i)-250);
-        } else {
-          stroke(245, 136, 6);
-          line(i-1, -smoothData.get(i-1), i, -smoothData.get(i));
+      if (filter) {
+        for (int i = 0; i <= 800; i++) {
+          if (i == 0) {
+            point(i, -smoothData.get(i)-250);
+          } else {
+            stroke(245, 136, 6);
+            line(i-1, -smoothData.get(i-1), i, -smoothData.get(i));
+          }
         }
       }
     }
@@ -252,6 +292,7 @@ void drawGraph_result() {
   stroke(0);
   // Background
   strokeWeight(0);
+  fill(255);
   rect(-50, -550, 900, 600);
 
   //Axis
