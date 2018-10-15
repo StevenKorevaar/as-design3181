@@ -46,8 +46,19 @@ void loop()
 {   
     unsigned long timeStamp = micros();
 
-    emg = EMGread();
+    if(Serial.available()){
+      while(Serial.available()){
+      emg = Serial.read();  
+      }
+      
+      
+    }
+
+    //emg = EMGread();
+    if(CALIBRATE == false){
     flex = analogRead(FLEX_PIN); 
+    }
+   
     //emg = random(100);
     //flex = random(100);
 
@@ -105,7 +116,7 @@ short EMGread(){
     int envelope = sq(dataAfterFilter);  // Get envelope by squaring the input
     if (CALIBRATE) {
         //Serial.print("Squared Data: ");
-        Serial.println(envelope);
+        return (short) envelope;
     }
     else {
         // Any value below the `baseline` value will be treated as zero
@@ -133,13 +144,20 @@ String makeJsonData(String emg_data,String flex_data){
   String content = "";
   DynamicJsonBuffer  jsonBuffer;
   JsonObject& jsonOb = jsonBuffer.createObject();      // Create the root of the object tree.
-
+  if(CALIBRATE){
+   JsonArray& jsonAr1 = jsonOb.createNestedArray("CALIB"); // Create field for EMG data
+  jsonAr1.add(emg_data);                               // Insert string  
+  jsonAr1.add(flex_data);                               // Insert string                              
+  jsonOb.printTo(content);                             // Create JSON
+    
+  }
+  else{
   JsonArray& jsonAr1 = jsonOb.createNestedArray("DATA"); // Create field for EMG data
   jsonAr1.add(emg_data);                               // Insert string  
   jsonAr1.add(flex_data);                               // Insert string
   
   jsonOb.printTo(content);                             // Create JSON
-
+  }
 return content;
 }
   
