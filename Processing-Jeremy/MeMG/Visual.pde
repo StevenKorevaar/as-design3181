@@ -1,22 +1,27 @@
+PImage logo;
+
 void gui() {
 
   cp5 = new ControlP5(this);
 
-  PFont pfont = createFont("Georgia", 20, true);
-  ControlFont font = new ControlFont(pfont,12);
-  ControlFont font2 = new ControlFont(pfont,12);
-  
+  PFont pfont = createFont("Gothic", 20, true);
+  ControlFont font = new ControlFont(pfont, 12);
+  ControlFont font2 = new ControlFont(pfont, 10);
 
   cp5.addTab("result")
     .setColorBackground(color(0, 160, 100))
     .setColorLabel(color(255))
     .setColorActive(color(255, 128, 0))
+    .getCaptionLabel()
+    .setFont(font2)
     ;
 
   cp5.getTab("default")
     .activateEvent(true)
     .setLabel("Default Tab")
     .setId(1)
+    .getCaptionLabel()
+    .setFont(font2)
     ;
 
   cp5.getTab("result")
@@ -31,16 +36,58 @@ void gui() {
     .setValue(timer.toString())
     .setFont(createFont("Georgia", 14))
     ;
-    
+
+
+  cp5.addTextlabel("flexLabel")
+    .setText("Flex")
+    .setPosition(1275, 70)
+    .setColorValue(#154360)
+    .setFont(createFont("Georgia", 16))
+    .moveTo("default")
+    ; 
+
   // Flex Slider
-  cp5.addSlider("flex")
-     .setPosition(1300,100)
-     .setSize(20,600)
-     .setRange(0,500)
-     .setColorCaptionLabel(255)
-     .setColorValueLabel(255)
-     .setFont(font2)
-     ;
+  cp5.addSlider("Rep-Low")
+    .setPosition(1260, 100)
+    .setSize(20, 600)
+    .setRange(0, 500)
+    .setValue(100) 
+    .setColorCaptionLabel(255)
+    .setColorValueLabel(255)
+    .setFont(font2)
+    .setCaptionLabel("Low")
+    .setSliderMode(Slider.FLEXIBLE)
+    .setColorBackground(#66ccff)
+    .setColorForeground(255)
+    .getValueLabel()
+    .setVisible(false)
+    ;
+
+  cp5.addSlider("flexVisual")
+    .setPosition(1285, 100)
+    .setSize(20, 600)
+    .setRange(0, 500)
+    .setColorCaptionLabel(255)
+    .setColorValueLabel(255)
+    .setFont(font2)
+    .setCaptionLabel("")
+    ;
+
+  cp5.addSlider("Rep-High")
+    .setPosition(1310, 100)
+    .setSize(20, 600)
+    .setRange(0, 500)
+    .setValue(300)
+    .setColorCaptionLabel(255)
+    .setColorValueLabel(255)
+    .setFont(font2)
+    .setCaptionLabel("High")
+    .setSliderMode(Slider.FLEXIBLE)
+    .setColorBackground(#66ccff)
+    .setColorForeground(255)
+    .getValueLabel()
+    .setVisible(false)
+    ;
 
   // Title
   heading = cp5.addTextlabel("title")
@@ -53,6 +100,8 @@ void gui() {
   Group g1 = cp5.addGroup("Control")
     .setBackgroundColor(color(0, 64))
     .setBackgroundHeight(150)
+    .setBarHeight(20)
+    .setFont(font2)
     ;
 
   cp5.addBang("Start")
@@ -76,6 +125,8 @@ void gui() {
   Group g2 = cp5.addGroup("Threshold")
     .setBackgroundColor(color(0, 64))
     .setBackgroundHeight(150)
+    .setBarHeight(20)
+    .setFont(font2)
     ;
 
   cp5.addSlider("Min")
@@ -114,6 +165,8 @@ void gui() {
   Group g3 = cp5.addGroup("Information")
     .setBackgroundColor(color(0, 64))
     .setBackgroundHeight(150)
+    .setBarHeight(20)
+    .setFont(font2)
     ;
   averageLabel = cp5.addTextlabel("average")
     .setText("Average : "+averageValue+
@@ -130,7 +183,7 @@ void gui() {
     .setBackgroundHeight(150)
     ;
   resultInformation = cp5.addTextlabel("result")
-    .setText("Duration    : "+ duration + " s" +
+    .setText("Duration    : "+ resultDuration +
     "\nAverage      : "+ average)
     .setPosition(20, 20)
     .setColorValue(255)
@@ -141,6 +194,7 @@ void gui() {
   // Accordion
   accordionDefault = cp5.addAccordion("acc")
     .setPosition(50, 100)
+    .setBarHeight(100)
     .setWidth(250)
     .addItem(g1)
     .addItem(g2)
@@ -165,6 +219,7 @@ void gui() {
     .setBackgroundColor(color(190))
     .setItemHeight(20)
     .setBarHeight(30)
+    .setHeight(150)
     .setWidth(200)
     .setFont(font)
     .setLabel("CSV files")               
@@ -223,10 +278,10 @@ void drawGraph() {
       if (raw) {
         for (int i = 0; i <= data.size()-1; i++) {
           if (i == 0) {
-            point(i, -data.get(i)-250);
+            point(i, -data.get(i)/scaleValue);
           } else {
             stroke(34, 122, 202);
-            line(i-1, -data.get(i-1), i, -data.get(i));
+            line(i-1, -data.get(i-1)/scaleValue, i, -data.get(i)/scaleValue);
           }
         }
       }
@@ -235,10 +290,10 @@ void drawGraph() {
       if (filter) {
         for (int i = 0; i <= smoothData.size()-1; i++) {
           if (i == 0) {
-            point(i, -smoothData.get(i)-250);
+            point(i, -smoothData.get(i)/scaleValue);
           } else {
             stroke(245, 136, 6);
-            line(i-1, -smoothData.get(i-1), i, -smoothData.get(i));
+            line(i-1, -smoothData.get(i-1)/scaleValue, i, -smoothData.get(i)/scaleValue);
           }
         }
       }
@@ -246,10 +301,10 @@ void drawGraph() {
       if (raw) {
         for (int i = 0; i <= 800; i++) {
           if (i == 0) {
-            point(i, -data.get(i)-250);
+            point(i, -data.get(i)/scaleValue);
           } else {
             stroke(34, 122, 202);
-            line(i-1, -data.get(i-1), i, -data.get(i));
+            line(i-1, -data.get(i-1)/scaleValue, i, -data.get(i)/scaleValue);
           }
         }
       }
@@ -258,10 +313,10 @@ void drawGraph() {
       if (filter) {
         for (int i = 0; i <= 800; i++) {
           if (i == 0) {
-            point(i, -smoothData.get(i)-250);
+            point(i, -smoothData.get(i)/scaleValue);
           } else {
             stroke(245, 136, 6);
-            line(i-1, -smoothData.get(i-1), i, -smoothData.get(i));
+            line(i-1, -smoothData.get(i-1)/scaleValue, i, -smoothData.get(i)/scaleValue);
           }
         }
       }
@@ -274,13 +329,13 @@ void drawGraph() {
   strokeWeight(3);
   for (int i = 0; i <= 100; i++) {
     float x = lerp(0, 800, i/100.0);
-    point(x, -minimum);
+    point(x, -minimum/scaleValue);
   }
   //Maximum
   stroke(0, 255, 0);
   for (int i = 0; i <= 100; i++) {
     float x = lerp(0, 800, i/100.0);
-    point(x, -maximum);
+    point(x, -maximum/scaleValue);
   }
   popMatrix();
 }
@@ -310,39 +365,39 @@ void drawGraph_result() {
   if (dataLoad.size() <= 800) {
     for (int i = 0; i <= dataLoad.size()-1; i++) {
       if (i == 0) {
-        point(i, -dataLoad.get(i)-250);
+        point(i, -dataLoad.get(i)/scaleValue);
       } else {
         stroke(34, 122, 202);
-        line((i-1)*800/dataLoad.size(), -dataLoad.get(i-1), i*800/dataLoad.size(), -dataLoad.get(i));
+        line((i-1)*800/dataLoad.size(), -dataLoad.get(i-1)/scaleValue, i*800/dataLoad.size(), -dataLoad.get(i)/scaleValue);
       }
     }
 
     //Smooth Data
     for (int i = 0; i <= smoothDataLoad.size()-1; i++) {
       if (i == 0) {
-        point(i, -smoothDataLoad.get(i)-250);
+        point(i, -smoothDataLoad.get(i)/scaleValue);
       } else {
         stroke(245, 136, 6);
-        line((i-1)*800/dataLoad.size(), -smoothDataLoad.get(i-1), i*800/dataLoad.size(), -smoothDataLoad.get(i));
+        line((i-1)*800/dataLoad.size(), -smoothDataLoad.get(i-1)/scaleValue, i*800/dataLoad.size(), -smoothDataLoad.get(i)/scaleValue);
       }
     }
   } else {
     for (int i = 0; i <= dataLoad.size()-1; i++) {
       if (i == 0) {
-        point(i, -dataLoad.get(i)-250);
+        point(i, -dataLoad.get(i)/scaleValue);
       } else {
         stroke(34, 122, 202);
-        line((i-1)*800/dataLoad.size(), -dataLoad.get(i-1), i*800/dataLoad.size(), -dataLoad.get(i));
+        line((i-1)*800/dataLoad.size(), -dataLoad.get(i-1)/scaleValue, i*800/dataLoad.size(), -dataLoad.get(i)/scaleValue);
       }
     }
 
     //Smooth Data
     for (int i = 0; i <= smoothDataLoad.size()-1; i++) {
       if (i == 0) {
-        point(i, -smoothDataLoad.get(i)-250);
+        point(i, -smoothDataLoad.get(i)/scaleValue);
       } else {
         stroke(245, 136, 6);
-        line((i-1)*800/dataLoad.size(), -smoothDataLoad.get(i-1), i*800/dataLoad.size(), -smoothDataLoad.get(i));
+        line((i-1)*800/dataLoad.size(), -smoothDataLoad.get(i-1)/scaleValue, i*800/dataLoad.size(), -smoothDataLoad.get(i)/scaleValue);
       }
     }
   }  
